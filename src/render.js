@@ -1,4 +1,3 @@
-//import Database from "./data.js";
 const sqlite = require("sqlite3").verbose();
 
 class Database
