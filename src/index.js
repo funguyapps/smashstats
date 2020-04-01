@@ -6,21 +6,21 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
   app.quit();
 }
 
-const createWindow = () => {
-  // Create the browser window.
+const createWindow = () => 
+{
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1200,
+    height: 900,
+    frame: false,
+    allowRenderProcessReuse: false,
     webPreferences: 
     {
       nodeIntegration: true,
     },
   });
 
-  // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
-
-  // Open the DevTools.
+  mainWindow.maximize();
   mainWindow.webContents.openDevTools();
 };
 
@@ -45,6 +45,3 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
