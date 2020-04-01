@@ -12,14 +12,13 @@ const createWindow = () =>
     width: 1200,
     height: 900,
     frame: false,
-    allowRenderProcessReuse: false,
     webPreferences: 
     {
       nodeIntegration: true,
     },
   });
 
-  mainWindow.loadFile(path.join(__dirname, 'index.html'));
+  mainWindow.loadFile(path.join(__dirname, '/pages/Home.html'));
   mainWindow.maximize();
   mainWindow.webContents.openDevTools();
 };

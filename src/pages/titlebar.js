@@ -1,36 +1,9 @@
-const sqlite = require("sqlite3").verbose();
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 const remote = require('electron').remote;
 
 const win = remote.getCurrentWindow();
-
-class Database
-{
-    static path = "";
-
-    static open()
-    {
-
-    }
-
-    static close()
-    {
-
-    }
-
-    static getTop3()
-    {
-        this.open();
-
-        // stuff
-
-        this.close();
-
-        return ""; // results
-    }
-}
 
 // When document has loaded, initialise
 document.onreadystatechange = (event) => 
