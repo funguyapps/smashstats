@@ -16,16 +16,16 @@
         </div>
         <div id="window-controls">
           <div class="button" id="min-button">
-            <img class="icon" srcset="../icons/min-w-10.png 1x, icons/min-w-12.png 1.25x, icons/min-w-15.png 1.5x, icons/min-w-15.png 1.75x, icons/min-w-20.png 2x, icons/min-w-20.png 2.25x, icons/min-w-24.png 2.5x, icons/min-w-30.png 3x, icons/min-w-30.png 3.5x" draggable="false" />
+            <img class="icon" srcset="../icons/min-w-10.png 1x" draggable="false" />
           </div>
           <div class="button" id="max-button">
-            <img class="icon" srcset="../icons/max-w-10.png 1x, icons/max-w-12.png 1.25x, icons/max-w-15.png 1.5x, icons/max-w-15.png 1.75x, icons/max-w-20.png 2x, icons/max-w-20.png 2.25x, icons/max-w-24.png 2.5x, icons/max-w-30.png 3x, icons/max-w-30.png 3.5x" draggable="false" />
+            <img class="icon" srcset="../icons/max-w-10.png 1x" draggable="false" />
           </div>
           <div class="button" id="restore-button">
-            <img class="icon" srcset="../icons/restore-w-10.png 1x, icons/restore-w-12.png 1.25x, icons/restore-w-15.png 1.5x, icons/restore-w-15.png 1.75x, icons/restore-w-20.png 2x, icons/restore-w-20.png 2.25x, icons/restore-w-24.png 2.5x, icons/restore-w-30.png 3x, icons/restore-w-30.png 3.5x" draggable="false" />
+            <img class="icon" srcset="../icons/restore-w-10.png 1x" draggable="false" />
           </div>
           <div class="button" id="close-button">
-            <img class="icon" srcset="../icons/close-w-10.png 1x, icons/close-w-12.png 1.25x, icons/close-w-15.png 1.5x, icons/close-w-15.png 1.75x, icons/close-w-20.png 2x, icons/close-w-20.png 2.25x, icons/close-w-24.png 2.5x, icons/close-w-30.png 3x, icons/close-w-30.png 3.5x" draggable="false" />
+            <img class="icon" srcset="../icons/close-w-10.png 1x" draggable="false" />
           </div>
         </div>
       </div>
@@ -45,8 +45,42 @@
       </div>
     </div>
     <div id="main">
-      <h1 class="siimple-h1">Hello World!</h1>
-      <p class="siimple-p">Welcome to your Electron application.</p>
+      <div class="siimple-grid">
+        <!-- Title Row -->
+        <div class="siimple-grid-row">
+          <div class="siimple-grid-col siimple-grid-col--4"></div>
+          <div class="siimple-grid-col siimple-grid-col--4">
+            <h1 class="siimple-h1" style="margin-left: 10px; color: var(--blue);">Top 3</h1>
+          </div>
+          <div class="siimple-grid-col siimple-grid-col--4"></div>
+        </div>
+        <!-- Content Row -->
+        <div class="siimple-grid-row">
+          <div class="content-box siimple-grid-col siimple-grid-col--4" style="height: 400px;"></div>
+          <div class="content-box siimple-grid-col siimple-grid-col--4" style="height: 400px;"></div>
+          <div class="content-box siimple-grid-col siimple-grid-col--4" style="height: 400px;"></div>
+        </div>
+        <!-- Title Row -->
+        <div class="siimple-grid-row">
+          <div class="siimple-grid-col siimple-grid-col--8">
+            <h1 class="siimple-h1" style="margin-left: 10px; color: var(--blue);">Win % Progression</h1>
+          </div>
+          <div class="siimple-grid-col siimple-grid-col--4">
+            <h1 class="siimple-h1" style="margin-left: 10px; color: var(--blue);">Main Spotlight</h1>
+          </div>
+        </div>
+        <!-- Content Row -->
+        <div class="siimple-grid-row">
+          <div class="content-box siimple-grid-col siimple-grid-col--8" style="height: 400px;"></div>
+          <div class="siimple-grid-col siimple-grid-col--4" style="margin-top: 0; padding-top: 0;">
+            <div class="content-box" style="height: 325px; margin-top: 0; padding-top: 0; border-top: 0;"></div>
+            <button class="siimple-btn siimple-btn--warning" style="margin-top: 10px; width: calc(100% - 20px); margin-left:10px;">
+              <h3 class="siimple-h3" style="margin-top: 10px; color: var(--darker);">New Battle</h3>
+            </button>
+          </div>
+        </div>
+      </div>
+      </div>
     </div>
   </body>  
 </html>
