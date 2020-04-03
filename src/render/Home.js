@@ -1,27 +1,25 @@
 const sqlite = require("sqlite3").verbose();
 
-class Database
+const path = __dirname + "/../stats.db";
+
+async function getTop3(sortMethod)
 {
-    static path = "";
+    const db = new sqlite.Database(path);
+    
+    const sql = "SELECT Name name FROM Fighters ORDER BY ? DESC";
 
-    static open()
+    await db.all(sql, [sortMethod], (err, rows) => 
     {
+        if (err) {console.log(err);}
 
-    }
+        console.log(rows);
 
-    static close()
-    {
-
-    }
-
-    static getTop3()
-    {
-        this.open();
-
-        // stuff
-
-        this.close();
-
-        return ""; // results
-    }
+        db.close();
+    
+        return rows;
+    });
 }
+
+let results = getTop3("Score");
+
+console.log(results);
