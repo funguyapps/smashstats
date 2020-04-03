@@ -5,8 +5,8 @@
     <link rel="stylesheet" href="../../node_modules/siimple/dist/siimple.css">
     <link rel="stylesheet" href="../index.css">
     <link rel="stylesheet" href="../siimple-overwrite.css">
-    <script defer src="Home.js"></script>
-    <script defer src="titlebar.js"></script>
+    <script defer src="../render/Home.js"></script>
+    <script defer src="../components/titlebar.js"></script>
   </head>
   <body>
     <header id="titlebar">
@@ -72,11 +72,10 @@
         <!-- Content Row -->
         <div class="siimple-grid-row">
           <div class="content-box siimple-grid-col siimple-grid-col--8" style="height: 400px;"></div>
-          <div class="siimple-grid-col siimple-grid-col--4" style="margin-top: 0; padding-top: 0;">
-            <div class="content-box" style="height: 325px; margin-top: 0; padding-top: 0; border-top: 0;"></div>
-            <button class="siimple-btn siimple-btn--warning" style="margin-top: 10px; width: calc(100% - 20px); margin-left:10px;">
-              <h3 class="siimple-h3" style="margin-top: 10px; color: var(--darker);">New Battle</h3>
-            </button>
+          <div class="content-box siimple-grid-col siimple-grid-col--4" style="height: 325px; margin-top: 0; padding-top: 0;">
+            <a class="siimple-btn siimple-btn--warning sticky-button" href="NewBattle.html">
+              <h3 class="siimple-h3 button-label">New Battle</h3>
+            </a>
           </div>
         </div>
       </div>

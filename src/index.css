@@ -269,9 +269,25 @@ body
   border-radius: 15px;
   margin-left: 10px;
   margin-right: 10px;
+  position: relative;
 }
 
 .siimple-h1
 {
   margin-bottom:0;
+}
+
+.sticky-button
+{
+  margin-top: 10px; 
+  width: 100%;
+  position: absolute;
+  bottom: -75px;
+  left: 0;
+}
+
+.button-label
+{
+  margin-top: 10px; 
+  color: var(--darker);
 }

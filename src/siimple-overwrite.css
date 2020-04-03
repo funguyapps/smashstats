@@ -2,3 +2,8 @@
 {
     color: var(--lighter);
 }
+
+.siimple-btn
+{
+  border-radius: 15px;
+}
