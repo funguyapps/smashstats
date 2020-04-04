@@ -307,3 +307,16 @@ body
   color: var(--darker);
   margin: 10px;
 }
+
+.content-box .content-box-img
+{
+  align-content: center;
+}
+
+.content-box-img
+{
+  width: auto;
+  height: 80%;
+  align-self: center;
+  margin-left: calc(30vw / 2 - 12vw);
+}
