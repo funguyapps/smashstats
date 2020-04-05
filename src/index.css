@@ -267,9 +267,10 @@ body
 {
   background-color: var(--lighter);
   border-radius: 15px;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 12px;
+  margin-right: 12px;
   position: relative;
+  text-align: center;
 }
 
 .content-box-title
@@ -308,15 +309,29 @@ body
   margin: 10px;
 }
 
-.content-box .content-box-img
-{
-  align-content: center;
-}
-
 .content-box-img
 {
   width: auto;
+  height: 95%;
+}
+
+#mainImg
+{
   height: 80%;
-  align-self: center;
-  margin-left: calc(30vw / 2 - 12vw);
+  width: auto;
+  position: absolute;
+  left: 0;
+  margin: 5%;
+}
+
+#mainP
+{
+  position: absolute;
+  right: 0;
+  margin: 5%;
+  color: var(--darker);
+  white-space: pre-line;
+  text-align: left;
+  font-weight: bold;
+  font-size: 1.1vw;
 }

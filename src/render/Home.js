@@ -17,6 +17,9 @@ const box1Img = document.getElementById("box1Img");
 const box2Img = document.getElementById("box2Img");
 const box3Img = document.getElementById("box3Img");
 
+const mainImg = document.getElementById("mainImg");
+const mainP = document.getElementById("mainP");
+
 // data access functions
 function getTop3(sortMethod)
 {
@@ -56,5 +59,41 @@ function getTop3(sortMethod)
     });
 }
 
+function mainHighlight()
+{
+    const db = new sqlite.Database(dbPath);
+
+    // load the json file
+    const jsonLocation = path.join(__dirname, "../profile.json");
+
+    const request = new XMLHttpRequest();
+    request.open("GET", jsonLocation);
+    request.responseType = "json";
+    request.send(); 
+
+    // set user's main for querying
+    let main;
+    request.onload = function()
+    {
+        main = request.response["mains"][0];
+
+        // set up display
+        mainImg.src = path.join(__dirname, "../assets/fighters", main + ".png");
+
+        // query data
+        const sql = "SELECT Wins wins, Score score, KD kd FROM Fighters WHERE Name=\"" + main + "\"";
+
+        db.all(sql, (err, rows) => 
+        {
+            if (err) { console.log(err); }
+
+            mainP.textContent = "Score: " + rows[0].score + "\n\n Wins: " + rows[0].wins + "\n\n KD: " + rows[0].kd;
+
+            db.close();
+        });
+    }
+}
+
 // main logic
 getTop3("Score");
+mainHighlight();
