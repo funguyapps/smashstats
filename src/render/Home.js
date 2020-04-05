@@ -1,6 +1,8 @@
 // imports
 const sqlite = require("sqlite3").verbose();
 const path = require("path");
+const moment = require("moment");
+const chart = require("chart.js");
 
 // global variables
 const dbPath = path.join(__dirname, "../stats.db");
@@ -19,6 +21,8 @@ const box3Img = document.getElementById("box3Img");
 
 const mainImg = document.getElementById("mainImg");
 const mainP = document.getElementById("mainP");
+
+const winProgressionCanvas = document.getElementById("winProgressionCanvas");
 
 // data access functions
 function getTop3(sortMethod)
@@ -94,6 +98,90 @@ function mainHighlight()
     }
 }
 
+function winProgression()
+{
+    const db = new sqlite.Database(dbPath);
+
+    const sql = "SELECT WinPct winPct, Meta date FROM Battles";
+
+    db.all(sql, (err, rows) => 
+    {
+        let data = [];
+        let labels = [];
+
+        rows.map((value) => { data.push(value.winPct); });
+        rows.map((value) => { labels.push(moment(value.date).format("MM/DD")); });
+
+        console.log(data);
+        console.log(labels);
+
+        const progressionChart = new chart(winProgressionCanvas, 
+            {
+                type: "line",
+                data: 
+                {
+                    labels: labels,
+                    fontColor: "#1b1b1b",
+                    datasets: 
+                    [
+                        {
+                            data: data,
+                            fill: false,
+                            backgroundColor: "#0062ff",
+                            borderColor: "#0062ff",
+                        }
+                    ],
+                },
+                options:
+                {
+                    responsive: true,
+                    title:
+                    {
+                        display: false,
+                    },
+                    legend:
+                    {
+                        display: false,
+                    },
+                    scales: 
+                    {
+                        yAxes:
+                        [
+                            {
+                                display: true,
+                                ticks: 
+                                {
+                                    min: 0,
+                                    max: 1,
+                                    fontColor: "#1b1b1b",
+                                },
+                                gridLines:
+                                {
+                                    color: ["#1b1b1b", "#1b1b1b", "#1b1b1b", "#1b1b1b", "#1b1b1b", "#1b1b1b", "#1b1b1b", "#1b1b1b", "#1b1b1b", "#1b1b1b", "#1b1b1b"],
+                                }
+                            }
+                        ],
+                        xAxes:
+                        [
+                            {
+                                display: true,
+                                ticks:
+                                {
+                                  fontColor: "#1b1b1b",  
+                                },
+                                gridLines:
+                                {
+                                    color: ["#1b1b1b", "#1b1b1b", "#1b1b1b"],
+                                }
+                            }
+                        ]
+                    }
+                }
+            })
+    });
+}
+
 // main logic
 getTop3("Score");
 mainHighlight();
+winProgression();
