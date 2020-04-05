@@ -335,3 +335,8 @@ body
   font-weight: bold;
   font-size: 1.1vw;
 }
+
+#winProgressionChart
+{
+  height: 36vh;
+}

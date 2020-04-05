@@ -110,7 +110,11 @@ function winProgression()
         let labels = [];
 
         rows.map((value) => { data.push(value.winPct); });
-        rows.map((value) => { labels.push(moment(value.date).format("MM/DD")); });
+        //rows.map((value) => { labels.push(moment(value.date).format("MM/DD")); });
+        rows.map((value) => { labels.push(""); });
+
+        labels[0] = moment(rows[0].date).format("MM/DD");
+        labels[labels.length - 1] = moment(rows[rows.length - 1].date).format("MM/DD");
 
         console.log(data);
         console.log(labels);
@@ -135,6 +139,7 @@ function winProgression()
                 options:
                 {
                     responsive: true,
+                    maintainAspectRatio: false,
                     title:
                     {
                         display: false,
@@ -169,10 +174,6 @@ function winProgression()
                                 {
                                   fontColor: "#1b1b1b",  
                                 },
-                                gridLines:
-                                {
-                                    color: ["#1b1b1b", "#1b1b1b", "#1b1b1b"],
-                                }
                             }
                         ]
                     }
