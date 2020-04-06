@@ -24,6 +24,11 @@ const mainP = document.getElementById("mainP");
 
 const winProgressionCanvas = document.getElementById("winProgressionCanvas");
 
+const filterSelect = document.getElementById("filterSelect");
+
+// set up event listeners
+filterSelect.onchange = () => { getTop3(filterSelect.value) };
+
 // data access functions
 function getTop3(sortMethod)
 {
@@ -110,7 +115,6 @@ function winProgression()
         let labels = [];
 
         rows.map((value) => { data.push(value.winPct); });
-        //rows.map((value) => { labels.push(moment(value.date).format("MM/DD")); });
         rows.map((value) => { labels.push(""); });
 
         labels[0] = moment(rows[0].date).format("MM/DD");

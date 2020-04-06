@@ -50,7 +50,17 @@
         <div class="siimple-grid-row">
           <div class="siimple-grid-col siimple-grid-col--4"></div>
           <div class="siimple-grid-col siimple-grid-col--4">
-            <h1 class="siimple-h1 content-box-title" style="margin-left: 10px; color: var(--blue);">Top 3</h1>
+            <div style="height: 4vh; position: relative;">
+              <h1 class="siimple-h1 content-box-title" style="margin-left: 10px; color: var(--blue); position: absolute; left: 0;">Top 3</h1>
+              <div  style="position: absolute; left: 0; bottom: 0; margin-left: 10vw;">
+                <label style="color: var(--lighter);">in</label>
+                <select id="filterSelect" class="siimple-select">
+                  <option>Score</option>
+                  <option>Wins</option>
+                  <option>KD</option>
+                </select>
+              </div>
+            </div>
           </div>
           <div class="siimple-grid-col siimple-grid-col--4"></div>
         </div>
@@ -87,8 +97,12 @@
             <canvas id="winProgressionCanvas" style="color: var(--darker);"></canvas>
           </div>
           <div class="content-box siimple-grid-col siimple-grid-col--4" style="height: 30vh; margin-top: 0; padding-top: 0;">
-            <img id="mainImg">
-            <p id="mainP" class="siimple-p"></p>
+            <div style="width: 60%; height: 100%; text-align: center; position: absolute; left: 0;">
+              <img id="mainImg">
+            </div>
+            <div style="width: 40%; height: 100%; text-align: left; position: absolute; right: 0;">
+              <p id="mainP" class="siimple-p"></p>
+            </div>
             <a class="siimple-btn siimple-btn--warning sticky-button" href="NewBattle.html">
               <h3 class="siimple-h3 button-label">New Battle</h3>
             </a>

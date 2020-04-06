@@ -7,3 +7,14 @@
 {
   border-radius: 15px;
 }
+
+.siimple-select
+{
+  color: var(--darker);
+  background-color: var(--lighter);
+}
+
+.siimple-select > option 
+{ 
+  color: var(--darker); 
+}
