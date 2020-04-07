@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../node_modules/siimple/dist/siimple.css">
+    <link rel="stylesheet" href="../index.css">
+    <link rel="stylesheet" href="../siimple-overwrite.css">
+    <link rel="stylesheet" href="../styles/CreateProfile.css">
+    <script defer src="../render/CreateProfile.js"></script>
+    <script defer src="../components/titlebar.js"></script>
+  </head>
+  <body>
+    <header id="titlebar">
+        <div id="drag-region">
+          <div id="window-title">
+            <span>Smash Stats</span>
+          </div>
+          <div id="window-controls">
+            <div class="button" id="min-button">
+              <img class="icon" srcset="../icons/min-w-10.png 1x" draggable="false" />
+            </div>
+            <div class="button" id="max-button">
+              <img class="icon" srcset="../icons/max-w-10.png 1x" draggable="false" />
+            </div>
+            <div class="button" id="restore-button">
+              <img class="icon" srcset="../icons/restore-w-10.png 1x" draggable="false" />
+            </div>
+            <div class="button" id="close-button">
+              <img class="icon" srcset="../icons/close-w-10.png 1x" draggable="false" />
+            </div>
+          </div> 
+        </div>
+      </header>
+        <div style="align-content: center; align-items: center; text-align: center; margin-top: 25vh;">
+            <div class="content-medium siimple-form">
+              <div class="siimple-form-title">Create Your Profile</div>
+              <div class="siimple-form-detail">Set basic info so Smash Stats can analyze your play.</div>
+              <div class="siimple-form-field">
+                  <div class="siimple-form-field-label">Your Name</div>
+                  <input id="nameInput" class="siimple-input">
+              </div>
+              <div class="siimple-form-field">
+                  <div class="siimple-form-field-label">Your Main</div>
+                  <input id="main1Input" class="siimple-input">
+              </div>
+              <div class="siimple-form-field">
+                  <div class="siimple-form-field-label">(Optional) Second Main</div>
+                  <input id="main2Input" class="siimple-input">
+              </div> <div class="siimple-form-field">
+                  <a id="finishButton" class="siimple-btn siimple-btn--success">Finish</a>
+              </div>
+            </div>
+        </div>
+  </body>  
+</html>

@@ -1,5 +1,6 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
+const fs = require('fs');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -18,7 +19,14 @@ const createWindow = () =>
     },
   });
 
-  mainWindow.loadFile(path.join(__dirname, '/pages/Home.html'));
+  if (fs.existsSync(path.join(__dirname, "profile.json")))
+  {
+    mainWindow.loadFile(path.join(__dirname, 'pages/Home.html'));
+  }
+  else
+  {
+    mainWindow.loadFile(path.join(__dirname, "pages/CreateProfile.html"));
+  }
   mainWindow.maximize();
   mainWindow.webContents.openDevTools();
 };
@@ -43,4 +51,9 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+});
+
+ipcMain.on("createProfile", (event, args) => 
+{
+    fs.writeFileSync(path.join(__dirname, "profile.json"), JSON.stringify(args));
 });

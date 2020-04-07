@@ -1,0 +1,30 @@
+.siimple-form-title
+{
+    color: var(--lighter);
+    font-size: 3vh;
+}
+
+.siimple-form-detail
+{
+    color: var(--lighter);
+    font-size: 2vh;
+}
+
+.siimple-form-field-label
+{
+    color: var(--lighter);
+    font-size: 2vh;
+}
+
+.siimple-input
+{
+    background-color: var(--lighter);
+    color: var(--darker);
+    font-size: 2vh;
+}
+
+.siimple-btn.siimple-btn--success
+{
+    color: var(--darker);
+    font-size: 2vh;
+}
