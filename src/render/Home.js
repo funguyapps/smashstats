@@ -120,10 +120,7 @@ function winProgression()
         labels[0] = moment(rows[0].date).format("MM/DD");
         labels[labels.length - 1] = moment(rows[rows.length - 1].date).format("MM/DD");
 
-        console.log(data);
-        console.log(labels);
-
-        const progressionChart = new chart(winProgressionCanvas, 
+        new chart(winProgressionCanvas, 
             {
                 type: "line",
                 data: 
@@ -152,6 +149,13 @@ function winProgression()
                     {
                         display: false,
                     },
+                    elements: 
+                    { 
+                        point: 
+                        { 
+                            radius: 0 
+                        } 
+                    },
                     scales: 
                     {
                         yAxes:
@@ -166,7 +170,7 @@ function winProgression()
                                 },
                                 gridLines:
                                 {
-                                    color: ["#1b1b1b", "#1b1b1b", "#1b1b1b", "#1b1b1b", "#1b1b1b", "#1b1b1b", "#1b1b1b", "#1b1b1b", "#1b1b1b", "#1b1b1b", "#1b1b1b"],
+                                    display: false,
                                 }
                             }
                         ],
@@ -178,6 +182,10 @@ function winProgression()
                                 {
                                   fontColor: "#1b1b1b",  
                                 },
+                                gridLines:
+                                {
+                                    display: false,
+                                }
                             }
                         ]
                     }

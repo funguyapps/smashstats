@@ -329,6 +329,7 @@ body
   position: absolute;
   right: 0;
   margin: 5%;
+  margin-top: 50%;
   color: var(--darker);
   white-space: pre-line;
   text-align: left;
