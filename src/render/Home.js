@@ -64,7 +64,7 @@ function getTop3(sortMethod)
         box3Left.textContent = rows[2].name;
         box3Right.textContent = rows[2].sort;
 
-        box3Img.src = path.join(__dirname, "../assets/fighters", box3Name + ".png");
+        box3Img.src = path.join(__dirname, "../assets/fighters_adjusted", box3Name + ".png");
     });
 }
 
@@ -87,7 +87,7 @@ function mainHighlight()
         main = request.response["mains"][0];
 
         // set up display
-        mainImg.src = path.join(__dirname, "../assets/fighters", main + ".png");
+        mainImg.src = path.join(__dirname, "../assets/fighters_adjusted", main + ".png");
 
         // query data
         const sql = "SELECT Wins wins, Score score, KD kd FROM Fighters WHERE Name=\"" + main + "\"";

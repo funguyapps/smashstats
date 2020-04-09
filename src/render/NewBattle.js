@@ -14,16 +14,20 @@ const opponentImg = document.getElementById("opponentImg");
 
 const saveButton = document.getElementById("saveButton");
 
+const alertDiv = document.getElementById("alertDiv");
+
 // event listeners
 userFighter.onchange = () => { updatePicture(userFighter.value, userImg); resetStyle(userFighter); };
-userStocks.onchange = () => { resetStyle(userStocks); };
+userStocks.onchange = () => { resetStyle(userStocks); removeAlert(); };
 
 opponentType.onchange = () => { updateQualifier(); }
 opponentQualifier.onchange = () => { resetStyle(opponentQualifier); };
 opponentFighter.onchange = () => { updatePicture(opponentFighter.value, opponentImg); resetStyle(opponentFighter); };
-opponentStocks.onchange = () => { resetStyle(opponentStocks); }
+opponentStocks.onchange = () => { resetStyle(opponentStocks); removeAlert(); }
 
 saveButton.onclick = () => { validate(saveButton); };
+
+userStocks.onkeypress = (e) => { disableEnter(e); };
 
 // necessary vars
 const acceptedFighters = [
@@ -119,7 +123,7 @@ function updatePicture(fighter, img)
 
     if (acceptedFighters.includes(fighter))
     {
-        img.src = path.join(__dirname, "../assets/fighters", fighter + ".png");
+        img.src = path.join(__dirname, "../assets/fighters_adjusted", fighter + ".png");
     }
 }
 
@@ -137,12 +141,42 @@ function updateQualifier()
 
 function validate(sender)
 {
-  	if (checkNotEmpty())
+  	if (checkNotEmpty() && checkWinner())
   	{
 		// do some sql stuff here
 		
 		sender.href = "./Home.html";
   	}
+}
+
+function checkWinner()
+{
+	let winner = true;
+
+	if (userStocks.value === "0" && opponentStocks.value === "0")
+	{
+		winner = false;
+		createAlert("Both the user and opponent have 0 stocks remaining. Please check these values and try again.");
+	}
+	else if (userStocks.value !== "0" && opponentStocks.value !== "0")
+	{
+		winner = false;
+		createAlert("Neither player has lost. Please check the stock values to make sure one player is at 0 and try again.");
+	}
+	
+	return winner;
+}
+
+function createAlert(msg)
+{
+	let alert = document.createElement("div");
+	alert.className = "siimple-alert siimple-alert--error";
+	alert.textContent = msg;
+
+	alertDiv.appendChild(alert);
+
+	userStocks.style = "border: 1px solid var(--red);";
+	opponentStocks.style = "border: 1px solid var(--red);";
 }
 
 function checkNotEmpty()
@@ -164,9 +198,34 @@ function checkNotEmpty()
 	return valid;
 }
 
+function disableEnter(e)
+{
+	if ((e.keyCode >= 48 && e.keyCode <= 57) || e.keyCode === 8)
+	{
+		
+	}
+	else
+	{
+		console.log("input blocked.");
+		e.preventDefault();
+		return false;
+	}
+}
+
 function resetStyle(input)
 {
 	input.style = "";
+}
+
+function removeAlert()
+{
+	while (alertDiv.lastChild)
+	{
+		alertDiv.removeChild(alertDiv.lastChild);
+	}
+
+	userStocks.style = "";
+	opponentStocks.style = "";
 }
 
 function titleCase(str) 
