@@ -18,3 +18,14 @@
 { 
   color: var(--darker); 
 }
+
+.siimple-input
+{
+  background-color: var(--lighter);
+  color: var(--darker);
+}
+
+.siimple-form-label
+{
+  color: var(--lighter);
+}

@@ -5,7 +5,8 @@
     <link rel="stylesheet" href="../../node_modules/siimple/dist/siimple.css">
     <link rel="stylesheet" href="../index.css">
     <link rel="stylesheet" href="../siimple-overwrite.css">
-    <script defer src="../render/Home.js"></script>
+    <link rel="stylesheet" href="../styles/NewBattle.css">
+    <script defer src="../render/NewBattle.js"></script>
     <script defer src="../components/titlebar.js"></script>
   </head>
   <body>
@@ -45,7 +46,78 @@
       </div>
     </div>
     <div id="main">
-      <h1 class="siimple-h1">New Battle</h1>
+      <div class="siimple-grid" style="padding-top: 15vh;">
+        <!-- Title Row -->
+        <div class="siimple-grid-row">
+          <div class="siimple-grid-col siimple-grid-col--6">
+            <h1 class="siimple-h1" style="color: var(--yellow);">Your Results</h1>
+          </div>
+          <div class="siimple-grid-col siimple-grid-col--6">
+            <h1 class="siimple-h1" style="color: var(--yellow);">Opponent Results</h1>
+          </div>
+        </div>
+        <!-- Content Row -->
+        <div class="siimple-grid-row">
+          <div class="siimple-grid-col siimple-grid-col--5" style="height: 45vh; position: relative;">
+            <div class="siimple-form" style="position: absolute; left: 0; width: 40%; padding: 15px;">
+              <div class="siimple-form-field" style="position: relative;">
+                <label class="siimple-form-field-label">Fighter</label>
+                <input id="userFighter" class="siimple-input">
+              </div>
+               <div class="siimple-form-field">
+                <label class="siimple-form-field-label">Stocks</label>
+                <input id="userStocks" class="siimple-input">
+              </div>
+            </div>
+            <div style="position: absolute; right: 0; width: 60%;">
+              <img id="userImg" style="width: 100%; height: auto;">
+            </div>
+          </div>
+          <div class="siimple-grid-col siimple-grid-col--2">
+            <h3 class="siimple-h3" style="color: var(--yellow); padding-top: 15vh;">VS.</h3>
+          </div>
+          <div class="siimple-grid-col siimple-grid-col--5" style="position: relative;">
+            <div style="position: absolute; left: 0; width: 60%;">
+              <img id="opponentImg" style="width: 100%; height: auto;"><!--style="height: 33vh; width: auto;"-->
+            </div>
+            <div class="siimple-form" style="position: absolute; right: 0; width: 40%; padding: 15px;">
+              <div class="siimple-form-field">
+                <label class="siimple-form-field-label">Type</label>
+                <select id="opponentType" class="siimple-select">
+                  <option>Human</option>
+                  <option>Bot</option>
+                </select>
+              </div>
+              <div class="siimple-form-field">
+                <label id="opponentQualifierTitle" class="siimple-form-field-label">Name</label>
+                <input id="opponentQualifier" class="siimple-input">
+              </div>
+              <div class="siimple-form-field" style="position: relative;">
+                <label class="siimple-form-field-label">Fighter</label>
+                <input id="opponentFighter" class="siimple-input">
+              </div>
+               <div class="siimple-form-field">
+                <label class="siimple-form-field-label" style="margin-right: 100%;">Stocks</label>
+                <input id="opponentStocks" class="siimple-input">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Footer Row -->
+        <div class="siimple-grid-row">
+          <div class="siimple-grid-col siimple-grid-col--12">
+            <div style="width: 25%; margin: auto;">
+              <a id="saveButton" class="siimple-btn" style="background-color: var(--yellow); color: var(--darker); margin-right: 20px;">
+                <h3 class="button-label" style="margin-top: 0;">Save</h3>
+              </a>
+              <a class="siimple-btn" href="./Home.html" style="background-color: var(--main); border: 1px solid var(--yellow); margin-left: 20px;">
+                <h3 class="button-label" style="margin-top: 0; color: var(--lighter);">Cancel</h3>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <div id="footer" class="footer-polygon" style="background-color: var(--yellow);"></div>
   </body>  
 </html>
