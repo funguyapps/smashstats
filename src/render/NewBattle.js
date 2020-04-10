@@ -1,4 +1,6 @@
+const moment = require("moment");
 const path = require("path");
+const sqlite = require("sqlite3");
 
 // doc references
 const userFighter = document.getElementById("userFighter");
@@ -17,17 +19,18 @@ const saveButton = document.getElementById("saveButton");
 const alertDiv = document.getElementById("alertDiv");
 
 // event listeners
-userFighter.onchange = () => { updatePicture(userFighter.value, userImg); resetStyle(userFighter); };
+userFighter.onchange = () => { updatePicture(userFighter.value, userImg); resetStyle(userFighter); removeAlert(); };
 userStocks.onchange = () => { resetStyle(userStocks); removeAlert(); };
 
 opponentType.onchange = () => { updateQualifier(); }
-opponentQualifier.onchange = () => { resetStyle(opponentQualifier); };
-opponentFighter.onchange = () => { updatePicture(opponentFighter.value, opponentImg); resetStyle(opponentFighter); };
+opponentQualifier.onchange = () => { resetStyle(opponentQualifier); removeAlert(); };
+opponentFighter.onchange = () => { updatePicture(opponentFighter.value, opponentImg); resetStyle(opponentFighter); removeAlert(); };
 opponentStocks.onchange = () => { resetStyle(opponentStocks); removeAlert(); }
 
 saveButton.onclick = () => { validate(saveButton); };
 
-userStocks.onkeypress = (e) => { disableEnter(e); };
+userStocks.onkeypress = (e) => { disableStr(e, userStocks, false); };
+opponentStocks.onkeypress = (e) => { disableStr(e, opponentStocks, false); };
 
 // necessary vars
 const acceptedFighters = [
@@ -116,7 +119,7 @@ const acceptedFighters = [
 autocomplete(userFighter, acceptedFighters, userImg);
 autocomplete(opponentFighter, acceptedFighters, opponentImg);
 
-// functions
+// EVENT FUNCTIONS
 function updatePicture(fighter, img)
 {
     fighter = titleCase(fighter);
@@ -132,81 +135,113 @@ function updateQualifier()
 	if (opponentType.value === "Human")
 	{
 		opponentQualifierTitle.textContent = "Name";
+		opponentQualifier.onkeypress = () => {};
+		opponentQualifier.style = "width: 11vw;";
 	}
 	else
 	{
-    opponentQualifierTitle.textContent = "Level";
+		opponentQualifierTitle.textContent = "Level";
+		opponentQualifier.onkeypress = (e) => { disableStr(e, opponentQualifier, true); };
+		opponentQualifier.style = "width: 5vw;"
 	}
 }
 
 function validate(sender)
 {
-  	if (checkNotEmpty() && checkWinner())
+  	if (checkNotEmpty() && checkWinner() && checkFighters())
   	{
-		// do some sql stuff here
+		dataOperations();
 		
 		sender.href = "./Home.html";
-  	}
-}
-
-function checkWinner()
-{
-	let winner = true;
-
-	if (userStocks.value === "0" && opponentStocks.value === "0")
-	{
-		winner = false;
-		createAlert("Both the user and opponent have 0 stocks remaining. Please check these values and try again.");
 	}
-	else if (userStocks.value !== "0" && opponentStocks.value !== "0")
+
+	function checkNotEmpty()
 	{
-		winner = false;
-		createAlert("Neither player has lost. Please check the stock values to make sure one player is at 0 and try again.");
+		let valid = true;
+
+		const inputs = [userFighter, userStocks, opponentQualifier, opponentStocks, opponentFighter];
+
+		inputs.map((i) => 
+		{  
+			if (i.value === "")
+			{
+				valid = false;
+
+				i.style = "border: 1px solid var(--red);";
+			}
+		});
+
+		return valid;
 	}
-	
-	return winner;
-}
 
-function createAlert(msg)
-{
-	let alert = document.createElement("div");
-	alert.className = "siimple-alert siimple-alert--error";
-	alert.textContent = msg;
+	function checkWinner()
+	{
+		let winner = true;
 
-	alertDiv.appendChild(alert);
+		if (userStocks.value === "0" && opponentStocks.value === "0")
+		{
+			winner = false;
+			createAlert("Both the user and opponent have 0 stocks remaining. Please check these values and try again.", true);
+		}
+		else if (userStocks.value !== "0" && opponentStocks.value !== "0")
+		{
+			winner = false;
+			createAlert("Neither player has lost. Please check the stock values to make sure one player is at 0 and try again.", true);
+		}
+		else if (parseInt(userStocks.value) > 3 || parseInt(opponentStocks.value) > 3)
+		{
+			winner = false;
+			createAlert("One stock value is above 3. Please check these values and try again.", true);
+		}
+		
+		return winner;
+	}
 
-	userStocks.style = "border: 1px solid var(--red);";
-	opponentStocks.style = "border: 1px solid var(--red);";
-}
+	function checkFighters()
+	{
+		let valid = true;
 
-function checkNotEmpty()
-{
-	let valid = true;
-
-	const inputs = [userFighter, userStocks, opponentQualifier, opponentStocks, opponentFighter];
-
-	inputs.map((i) => 
-	{  
-		if (i.value === "")
+		if (!(acceptedFighters.includes(titleCase(userFighter.value))))
 		{
 			valid = false;
-
-			i.style = "border: 1px solid var(--red);";
+			createAlert("Invalid user fighter name. Check that value and try again.", false);
 		}
-	});
+		
+		if (!(acceptedFighters.includes(titleCase(opponentFighter.value))))
+		{
+			valid = false;
+			createAlert("Invalid opponent fighter name. Check that value and try again.", false);
+		}
 
-	return valid;
+		return valid;
+	}
 }
 
-function disableEnter(e)
+function disableStr(e, input, allNums)
 {
-	if ((e.keyCode >= 48 && e.keyCode <= 57) || e.keyCode === 8)
+	let min = 48;
+	let max = 51;
+	
+	if (allNums) { min = 49; max = 57; }
+
+	if (e.keyCode === 8) // backspace
 	{
-		
+		// pass
 	}
-	else
+	else if (e.keyCode >= min && e.keyCode <= max) // numbers
 	{
-		console.log("input blocked.");
+		if (input.value.length >= 1) // no num input should be greater than 1 digit
+		{
+			block();
+		}
+	}
+	else // any other key
+	{
+		block();
+	}
+
+	function block()
+	{
 		e.preventDefault();
 		return false;
 	}
@@ -226,6 +261,168 @@ function removeAlert()
 
 	userStocks.style = "";
 	opponentStocks.style = "";
+}
+
+// HELPER FUNCTIONS
+function dataOperations()
+{
+	const db = new sqlite.Database(path.join(__dirname, "../stats.db"));
+
+	// function vars
+	let totalWins, totalCount, charWins, charCount;
+	let newTotalPct, newCharPct;
+	let won = false;
+
+	// check if won
+	if (userStocks.value !== "0") { won = true; }
+
+	// sql
+	const getTotalWins = "SELECT * FROM Battles WHERE User_Stocks != 0";
+	const getTotalCount = "SELECT * FROM Battles";
+	const getCharWins = "SELECT * FROM Battles WHERE User_Fighter=\"" + titleCase(userFighter.value) + "\" AND User_Stocks != 0";
+	const getCharCount = "SELECT * FROM Battles WHERE User_Fighter=\"" + titleCase(userFighter.value) + "\"";
+
+	// Battles Table Operations
+	// get total wins
+	db.all(getTotalWins, (err, rows) => 
+	{
+		totalWins = rows.length;
+
+		// THEN get total count
+		db.all(getTotalCount, (err, rows) => 
+		{
+			totalCount = rows.length;
+
+			// THEN get char wins
+			db.all(getCharWins, (err, rows) => 
+			{
+				charWins = rows.length;
+
+				// THEN get char total
+				db.all(getCharCount, (err, rows) => 
+				{
+					charCount = rows.length;
+
+					// THEN calculate new pcts & variables
+					newTotalPct = getNewWinPct(totalWins, totalCount);
+					newCharPct = getNewWinPct(charWins, charCount);
+
+					let opponent = "Bot";
+					let opponentLevel = opponentQualifier.value;
+
+					if (opponentType.value === "Human") 
+					{ 
+						opponent = opponentQualifier.value; 
+						opponentLevel = "-1";
+					}
+
+					// THEN insert all values
+					const insert = `INSERT INTO Battles VALUES (` +
+						`"${moment().format()}", ` +
+						`"${opponent}", ` +
+						`${userStocks.value}, ` +
+						`"${userFighter.value}", ` +
+						`${opponentStocks.value}, ` + 
+						`${opponentLevel}, ` +
+						`${newTotalPct}, ` +
+						`${newCharPct});`;
+
+					db.run(insert);
+				});
+			});
+		});
+	});
+
+	// Fighters Table Operations
+	let wins, losses, score, kd;
+
+	const getAll = `SELECT Wins wins, Losses losses, Score score FROM Fighters WHERE Name="${userFighter.value}"`;
+
+	db.all(getAll, (err, rows) => 
+	{
+		wins = won ? rows[0].wins + 1 : rows[0].wins;
+		losses = won ? rows[0].losses : rows[0].losses + 1;
+		score = getNewScore(rows[0].score);
+		kd = (losses === 0) ? wins : wins / losses;
+
+		const update = `UPDATE Fighters SET ` +
+			`Wins=${wins}, ` +
+			`Losses=${losses}, ` + 
+			`Score=${score}, ` +
+			`KD=${kd} WHERE Name="${userFighter.value}"`;
+
+		db.run(update);
+	});
+
+	db.close();
+
+	function getNewWinPct(wins, length)
+	{
+		if (won)
+		{
+			return (wins + 1) / (length + 1);
+		}
+
+		return (wins) / (length + 1);
+	}
+
+	function getNewScore(score)
+	{
+		let newScore;
+
+		if (won)
+		{
+			newScore = 100 + 20 * Math.pow(1.2, parseInt(userStocks.value));
+			if (opponentType.value === "Human")
+			{
+				newScore += 25;
+			}
+			else
+			{
+				newScore += 10 * Math.pow(1.1, parseInt(opponentQualifier.value));
+			}
+		}
+		else
+		{
+			newScore = -50 - 20 * Math.pow(1.2, parseInt(opponentStocks.value));
+			if (opponentType.value === "Human")
+			{
+				newScore += 25;
+			}
+			else
+			{
+				newScore += 5 * Math.pow(1.1, parseInt(opponentQualifier.value));
+			}
+		}
+
+		if (score === 0)
+		{
+			return newScore;
+		}
+		else
+		{
+			return (score + newScore) / 2;
+		}
+	}
+}
+
+function createAlert(msg, stocks)
+{
+	let alert = document.createElement("div");
+	alert.className = "siimple-alert siimple-alert--error";
+	alert.textContent = msg;
+
+	alertDiv.appendChild(alert);
+
+	if (stocks)
+	{
+		userStocks.style = "border: 1px solid var(--red);";
+		opponentStocks.style = "border: 1px solid var(--red);";
+	}
+	else
+	{
+		opponentQualifier.style = "border: 1px solid var(--red);";
+	}
 }
 
 function titleCase(str) 
