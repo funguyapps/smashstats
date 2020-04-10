@@ -41,30 +41,39 @@ function getTop3(sortMethod)
         if (err) { console.log(err); }
 
         db.close();
-             
-        // box 1
-        const box1Name = rows[0].name;
 
-        box1Left.textContent = box1Name;
-        box1Right.textContent = rows[0].sort;
+        let cont = false;
 
-        box1Img.src = path.join(__dirname, "../assets/fighters", box1Name + ".png");
+        rows.map((value) => { if (value.sort != 0) { cont = true; } });
 
-        // box 2
-        const box2Name = rows[1].name;
+        if (cont)
+        {
+            // box 1
+            const box1Name = rows[0].name;
 
-        box2Left.textContent = box2Name;
-        box2Right.textContent = rows[1].sort;
+            box1Left.textContent = box1Name;
+            box1Right.textContent = rows[0].sort;
 
-        box2Img.src = path.join(__dirname, "../assets/fighters", box2Name + ".png");
+            box1Img.src = path.join(__dirname, "../assets/fighters", box1Name + ".png");
 
-        // box 3
-        const box3Name = rows[2].name;
-        
-        box3Left.textContent = rows[2].name;
-        box3Right.textContent = rows[2].sort;
+            // box 2
+            if (rows[1].sort === 0) { return; }
+            const box2Name = rows[1].name;
 
-        box3Img.src = path.join(__dirname, "../assets/fighters_adjusted", box3Name + ".png");
+            box2Left.textContent = box2Name;
+            box2Right.textContent = rows[1].sort;
+
+            box2Img.src = path.join(__dirname, "../assets/fighters", box2Name + ".png");
+
+            // box 3
+            if (rows[2].sort === 0) { return; }
+            const box3Name = rows[2].name;
+            
+            box3Left.textContent = rows[2].name;
+            box3Right.textContent = rows[2].sort;
+
+            box3Img.src = path.join(__dirname, "../assets/fighters_adjusted", box3Name + ".png");
+        }
     });
 }
 
@@ -111,6 +120,7 @@ function winProgression()
 
     db.all(sql, (err, rows) => 
     {
+        if (rows.length === 0) { db.close(); return; }
         let data = [];
         let labels = [];
 
