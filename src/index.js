@@ -10,13 +10,13 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 const createWindow = () => 
 {
   const mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 900,
-    frame: false,
-    webPreferences: 
-    {
-      nodeIntegration: true,
-    },
+	width: 1200,
+	height: 900,
+	frame: false,
+	webPreferences: 
+	{
+	  nodeIntegration: true,
+	},
   });
 
   if (fs.existsSync(path.join(__dirname, "profile.json")))
@@ -24,11 +24,11 @@ const createWindow = () =>
     //mainWindow.loadFile(path.join(__dirname, 'pages/Home.html'));
 
     // debug purposes only! uncomment line above for prod
-    mainWindow.loadFile(path.join(__dirname, 'pages/NewBattle.html'));
+    mainWindow.loadFile(path.join(__dirname, 'pages/EditProfile.html'));
   }
   else
   {
-    mainWindow.loadFile(path.join(__dirname, "pages/CreateProfile.html"));
+	mainWindow.loadFile(path.join(__dirname, "pages/EditProfile.html"));
   }
   mainWindow.maximize();
   mainWindow.webContents.openDevTools();
@@ -44,7 +44,7 @@ app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
-    app.quit();
+	app.quit();
   }
 });
 
@@ -52,11 +52,16 @@ app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
+	createWindow();
   }
 });
 
 ipcMain.on("createProfile", (event, args) => 
 {
-    fs.writeFileSync(path.join(__dirname, "profile.json"), JSON.stringify(args));
+	fs.writeFileSync(path.join(__dirname, "profile.json"), JSON.stringify(args));
+});
+
+ipcMain.on("checkProfile", (event, arg) => 
+{
+	event.reply("checkProfile-reply", fs.existsSync(path.join(__dirname, "profile.json")));
 });

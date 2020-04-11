@@ -23,6 +23,7 @@ const mainImg = document.getElementById("mainImg");
 const mainP = document.getElementById("mainP");
 
 const winProgressionCanvas = document.getElementById("winProgressionCanvas");
+const currentWinPct = document.getElementById("currentWinPct");
 
 const filterSelect = document.getElementById("filterSelect");
 
@@ -42,38 +43,33 @@ function getTop3(sortMethod)
 
         db.close();
 
-        let cont = false;
+        // box 1
+        if (rows[0].sort === 0) { return; }
+        const box1Name = rows[0].name;
 
-        rows.map((value) => { if (value.sort != 0) { cont = true; } });
+        box1Left.textContent = box1Name;
+        box1Right.textContent = rows[0].sort;
 
-        if (cont)
-        {
-            // box 1
-            const box1Name = rows[0].name;
+        box1Img.src = path.join(__dirname, "../assets/fighters", box1Name + ".png");
 
-            box1Left.textContent = box1Name;
-            box1Right.textContent = rows[0].sort;
+        // box 2
+        if (rows[1].sort === 0) { return; }
+        const box2Name = rows[1].name;
 
-            box1Img.src = path.join(__dirname, "../assets/fighters", box1Name + ".png");
+        box2Left.textContent = box2Name;
+        box2Right.textContent = rows[1].sort;
 
-            // box 2
-            if (rows[1].sort === 0) { return; }
-            const box2Name = rows[1].name;
+        box2Img.src = path.join(__dirname, "../assets/fighters", box2Name + ".png");
 
-            box2Left.textContent = box2Name;
-            box2Right.textContent = rows[1].sort;
+        // box 3
+        if (rows[2].sort === 0) { return; }
+        const box3Name = rows[2].name;
+        
+        box3Left.textContent = rows[2].name;
+        box3Right.textContent = rows[2].sort;
 
-            box2Img.src = path.join(__dirname, "../assets/fighters", box2Name + ".png");
+        box3Img.src = path.join(__dirname, "../assets/fighters_adjusted", box3Name + ".png");
 
-            // box 3
-            if (rows[2].sort === 0) { return; }
-            const box3Name = rows[2].name;
-            
-            box3Left.textContent = rows[2].name;
-            box3Right.textContent = rows[2].sort;
-
-            box3Img.src = path.join(__dirname, "../assets/fighters_adjusted", box3Name + ".png");
-        }
     });
 }
 
@@ -129,6 +125,8 @@ function winProgression()
 
         labels[0] = moment(rows[0].date).format("MM/DD");
         labels[labels.length - 1] = moment(rows[rows.length - 1].date).format("MM/DD");
+
+        currentWinPct.textContent = `Win % Progression (now ${(rows[rows.length - 1].winPct) * 100}%)`;
 
         new chart(winProgressionCanvas, 
             {

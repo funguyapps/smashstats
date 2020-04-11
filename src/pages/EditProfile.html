@@ -5,8 +5,8 @@
     <link rel="stylesheet" href="../../node_modules/siimple/dist/siimple.css">
     <link rel="stylesheet" href="../index.css">
     <link rel="stylesheet" href="../siimple-overwrite.css">
-    <link rel="stylesheet" href="../styles/CreateProfile.css">
-    <script defer src="../render/CreateProfile.js"></script>
+    <link rel="stylesheet" href="../styles/EditProfile.css">
+    <script defer src="../render/EditProfile.js"></script>
     <script defer src="../components/titlebar.js"></script>
   </head>
   <body>
@@ -32,20 +32,20 @@
         </div>
       </header>
         <div style="align-content: center; align-items: center; text-align: center; margin-top: 25vh;">
-            <div class="content-medium siimple-form">
-              <div class="siimple-form-title">Create Your Profile</div>
+            <div class="siimple-form" style="width: 25vw; margin: auto;">
+              <div id= "formTitle" class="siimple-form-title">Create Your Profile</div>
               <div class="siimple-form-detail">Set basic info so Smash Stats can analyze your play.</div>
               <div class="siimple-form-field">
                   <div class="siimple-form-field-label">Your Name</div>
-                  <input id="nameInput" class="siimple-input">
+                  <input id="nameInput" class="siimple-input" style="width: 15vw;">
               </div>
-              <div class="siimple-form-field">
+              <div class="siimple-form-field" style="position: relative; width: 15vw; margin-left: auto; margin-right: auto;">
                   <div class="siimple-form-field-label">Your Main</div>
-                  <input id="main1Input" class="siimple-input">
+                  <input id="main1Input" class="siimple-input" style="width: 15vw;">
               </div>
-              <div class="siimple-form-field">
+              <div class="siimple-form-field" style="position: relative; width: 15vw; margin-left: auto; margin-right: auto;">
                   <div class="siimple-form-field-label">(Optional) Second Main</div>
-                  <input id="main2Input" class="siimple-input">
+                  <input id="main2Input" class="siimple-input" style="width: 15vw;">
               </div> <div class="siimple-form-field">
                   <a id="finishButton" class="siimple-btn siimple-btn--success">Finish</a>
               </div>

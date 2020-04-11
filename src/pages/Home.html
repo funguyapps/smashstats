@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="../../node_modules/siimple/dist/siimple.css">
     <link rel="stylesheet" href="../index.css">
     <link rel="stylesheet" href="../siimple-overwrite.css">
@@ -42,6 +43,9 @@
       <div id="homeLink" class="sidebar-item">
         <img src="../assets/fighters.png" class="sidebar-img">
         <a class="siimple-h2 siimple-link sidebar-title" style="color: var(--red);" href="./Fighters.html">Fighters</a>
+      </div>
+      <div style="position: absolute; bottom: 50px; left: 25px;">
+        <a href="./EditProfile.html"style="width: 50px; height: auto;"><i class="material-icons">settings</i></a>
       </div>
     </div>
     <div id="main">
@@ -85,7 +89,7 @@
         <!-- Title Row -->
         <div class="siimple-grid-row">
           <div class="siimple-grid-col siimple-grid-col--8">
-            <h1 class="siimple-h1 content-box-title" style="margin-left: 10px; color: var(--blue);">Win % Progression</h1>
+            <h1 id="currentWinPct" class="siimple-h1 content-box-title" style="margin-left: 10px; color: var(--blue); float: left;">Win % Progression</h1>
           </div>
           <div class="siimple-grid-col siimple-grid-col--4">
             <h1 class="siimple-h1 content-box-title" style="margin-left: 10px; color: var(--blue);">Main Spotlight</h1>
