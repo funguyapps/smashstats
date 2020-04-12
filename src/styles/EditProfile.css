@@ -21,6 +21,7 @@
     background-color: var(--lighter);
     color: var(--darker);
     font-size: 2vh;
+    width: 15vw;
 }
 
 .siimple-btn.siimple-btn--success

@@ -75,7 +75,6 @@ function getTop3(sortMethod)
 
 function mainHighlight()
 {
-    const db = new sqlite.Database(dbPath);
 
     // load the json file
     const jsonLocation = path.join(__dirname, "../profile.json");
@@ -91,21 +90,59 @@ function mainHighlight()
     {
         main = request.response["mains"][0];
 
-        // set up display
-        mainImg.src = path.join(__dirname, "../assets/fighters_adjusted", main + ".png");
+        setMainData(main);
 
-        // query data
-        const sql = "SELECT Wins wins, Score score, KD kd FROM Fighters WHERE Name=\"" + main + "\"";
-
-        db.all(sql, (err, rows) => 
+        // add a cycle button if more than 1 main
+        if (request.response["mains"].length > 1)
         {
-            if (err) { console.log(err); }
+            const nextMain = request.response["mains"][1];
 
-            mainP.textContent = "Score: " + rows[0].score + "\n\n Wins: " + rows[0].wins + "\n\n KD: " + rows[0].kd;
+            let button = document.createElement("button");
+            button.textContent = `${nextMain}`
+            button.className = "siimple-btn";
+            button.style = "background-color: var(--blue);";
+            button.onclick = () => 
+            { 
+                flipMain(button, main, nextMain);
+            };
 
-            db.close();
-        });
+            document.getElementById("cycleButton").appendChild(button);
+        }
     }
+}
+
+function flipMain(button, main1, main2)
+{
+    if (button.textContent === main1)
+    {
+        button.textContent = main2;
+        setMainData(main1);
+    }
+    else
+    {
+        button.textContent = main1;
+        setMainData(main2);
+    }
+}
+
+function setMainData(main)
+{
+    const db = new sqlite.Database(dbPath);
+
+    // set up display
+    mainImg.src = path.join(__dirname, "../assets/fighters_adjusted", main + ".png");
+
+    // query data
+    const sql = "SELECT Wins wins, Score score, KD kd FROM Fighters WHERE Name=\"" + main + "\"";
+
+    db.all(sql, (err, rows) => 
+    {
+        if (err) { console.log(err); }
+
+        mainP.textContent = "Score: " + rows[0].score + "\n\n Wins: " + rows[0].wins + "\n\n KD: " + rows[0].kd;
+
+        db.close();
+    });
 }
 
 function winProgression()

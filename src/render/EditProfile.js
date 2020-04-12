@@ -95,6 +95,11 @@ const acceptedFighters = [
 
 // set up event listeners
 finishButton.onclick = validate;
+
+nameInput.onchange = () => { resetStyle(nameInput); }
+main1Input.onchange = () => { resetStyle(main1Input); }
+main2Input.onchange = () => { resetStyle(main2Input); }
+
 autocomplete(main1Input, acceptedFighters);
 autocomplete(main2Input, acceptedFighters);
 
@@ -113,22 +118,18 @@ ipcRenderer.on("checkProfile-reply", (event, args) =>
 // * Functions
 function validate()
 {
-    const name = nameInput.value;
-    const main1 = titleCase(main1Input.value);
-    const main2 = titleCase(main2Input.value);
-
-    if (name !== "" && main1 !== "") // check that required fields are filled
+	if (checkNotEmpty([nameInput, main1Input])) // check that required fields are filled
     {
-        if (acceptedFighters.includes(main1)) // check that main1 is acceptable
+        if (checkValidFighter(main1Input)) // check that main1 is acceptable
         {
-            if ((main2Input.value !== "" && acceptedFighters.includes(main2)) || main2Input.value === "") // checks if main2 is valid if given
+            if ((main2Input.value !== "" && checkValidFighter(main2Input)) || main2Input.value === "") // checks if main2 is valid if given
             {
                 const profile = 
                 {
-                    name: name,
+                    name: nameInput.value,
                     mains: [
-                        main1,
-                        main2
+                        main1Input.value,
+                        main2Input.value
                     ]
                 }
                 
@@ -136,7 +137,38 @@ function validate()
                 finishButton.href = "./Home.html";
             }
         }
-    }
+	}
+	
+	function checkNotEmpty(inputs)
+	{
+		let valid = true;
+
+		inputs.map((i) => 
+		{  
+			if (i.value === "")
+			{
+				valid = false;
+
+				i.style = "border: 1px solid var(--red);";
+			}
+		});
+
+		return valid;
+	}
+
+	function checkValidFighter(input)
+	{
+		let valid = true;
+
+		if (!acceptedFighters.includes(titleCase(input.value)))
+		{
+			valid = false;
+
+			input.style = "border: 1px solid var(--red);";
+		}
+
+		return valid;
+	}
 }
 
 function setJSONValues()
@@ -155,6 +187,11 @@ function setJSONValues()
 		main1Input.value = request.response["mains"][0];
 		main2Input.value = request.response["mains"][1];
 	}
+}
+
+function resetStyle(input)
+{
+	input.style = "";
 }
 
 function titleCase(str) 
