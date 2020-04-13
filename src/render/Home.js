@@ -93,7 +93,7 @@ function mainHighlight()
         setMainData(main);
 
         // add a cycle button if more than 1 main
-        if (request.response["mains"].length > 1)
+        if (request.response["mains"][1] !== "")
         {
             const nextMain = request.response["mains"][1];
 

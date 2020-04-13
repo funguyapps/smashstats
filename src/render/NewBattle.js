@@ -59,6 +59,7 @@ const acceptedFighters = [
     "Ike",
     "Incineroar",
     "Inkling",
+    "Isabelle",
     "Jigglypuff",
     "Joker",
     "Ken",
