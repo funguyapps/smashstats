@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="../../node_modules/siimple/dist/siimple.css">
     <link rel="stylesheet" href="../index.css">
     <link rel="stylesheet" href="../siimple-overwrite.css">
-    <script defer src="../render/Home.js"></script>
+    <script defer src="../render/Fighters.js"></script>
     <script defer src="../components/titlebar.js"></script>
   </head>
   <body>
@@ -49,7 +49,88 @@
       </div>
     </div>
     <div id="main">
-      <h1 class="siimple-h1">Fighters</h1>
+      <div class="siimple-grid">
+        <div class="siimple-grid-row">
+          <!--Basic Info Column-->
+          <div class="siimple-grid-col siimple-grid-col--5">
+            <div class="simmple-grid">
+              <div class="siimple-grid-row">
+                <div class="siimple-grid-col siimple-grid-col--12">
+                  <div class="siimple-form">
+                    <div class="siimple-form-field" style="position: relative;">
+                      <i class="material-icons move-label" style="font-size: 3vh;">search</i>
+                      <input id="fighterInput" class="siimple-input" style="width: 15vw;" placeholder="Search for a fighter...">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="siimple-grid-row" style="justify-content: center; text-align: center;">
+                <img id="fighterImage" style="width: 75%; height: auto;">
+              </div>
+              <div class="siimple-grid-row" style="margin-top: 10%;">
+                <p class="data-label">Weight (62-135)</p>
+                <div class="content-box" style="height: 6vh; text-align: center; width: 100%;">
+                  <p id="weight" class="data" style="color: var(--red);"></p>
+                </div>
+              </div>
+              <div class="siimple-grid-row">
+                <p class="data-label">Speed</p>
+                <div class="content-box" style="height: 6vh; text-align: center; width: 100%;">
+                  <p id="speed" class="data" style="color: var(--red);"></p>
+                </div>
+              </div>
+              <div class="siimple-grid-row">
+                <p class="data-label">Archetype</p>
+                <div class="content-box" style="height: 6vh; text-align: center; width: 100%;">
+                  <p id="archetype" class="data" style="color: var(--red);"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="siimple-grid-col siimple-grid-col--1"></div>
+          <!--Moves, Bio Column-->
+          <div class="siimple-grid-col siimple-grid-col--6">
+            <div class="siimple-grid">
+              <div class="siimple-grid-row">
+                <div class="siimple-grid-col siimple-grid-col--12">
+                  <p class="data-label">Special Moves</p>
+                  <div class="content-box" style="height: 6vh; width: 100%;">
+                    <i class="material-icons move-label">arrow_upward</i>
+                    <p id="up" class="data" style="color: var(--red); padding-top:0;"></p>
+                  </div>
+                </div>
+                <div class="siimple-grid-col siimple-grid-col--12">
+                  <div class="content-box" style="height: 6vh; width: 100%;">
+                    <i class="material-icons move-label">arrow_forward</i>
+                    <p id="side" class="data" style="color: var(--red); padding-top:0;"></p>
+                  </div>
+                </div>
+                <div class="siimple-grid-col siimple-grid-col--12">
+                  <div class="content-box" style="height: 6vh; width: 100%;">
+                    <i class="material-icons move-label">arrow_downward</i>
+                    <p id="down" class="data" style="color: var(--red); padding-top:0;"></p>
+                  </div>
+                </div>
+                <div class="siimple-grid-col siimple-grid-col--12">
+                  <div class="content-box" style="height: 6vh; width: 100%;">
+                    <i class="material-icons move-label">lens</i>
+                    <p id="neutral" class="data" style="color: var(--red); padding-top:0;"></p>
+                  </div>
+                </div>
+              </div>
+              <div class="siimple-grid-row" style="width: 100%;">
+                <div class="siimple-grid-col simple-grid-col--12" style="width: 100%;">
+                  <p class="data-label">Bio (per Nintendo)</p>
+                  <div class="content-box" style="height: 25vh; width: 100%; text-align: left;">
+                    <p id="bio" style="color: var(--darker); padding: 2%; font-size: 2.5vh;"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <div id="footer" class="footer-polygon" style="background-color: var(--red);"></div>
   </body>  
 </html>

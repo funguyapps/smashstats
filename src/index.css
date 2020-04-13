@@ -5,7 +5,7 @@
   --lighter: #6d6d6d;
   --blue: #0062ff;
   --green: #14E870;
-  --red: #ff1c1c;
+  --red: #c20000;
   --yellow: #ffe800;
 }
 
@@ -391,4 +391,32 @@ body
   background-color: var(--lighter);
   color: var(--darker);
   border-bottom: 1px solid #d4d4d4;
+}
+
+.data-label
+{
+  margin-left: 12px;
+  color: var(--lighter);
+  font-size: 2vh;
+  font-weight: bold;
+}
+
+.data
+{
+  padding-top: 0%;
+  font-size: 5vh;
+  font-weight: bold;
+}
+
+.move-label
+{
+  font-size: 5vh;
+  color: var(--red);
+  padding: 1%;
+  float: left;
+}
+
+::-webkit-input-placeholder 
+{
+  color: var(--darker);
 }
