@@ -1,5 +1,6 @@
 const sqlite3 = require("sqlite3");
 const path = require("path");
+const { ipcRenderer } = require("electron");
 
 // * Doc References
 const fighterInput = document.getElementById("fighterInput");
@@ -105,9 +106,21 @@ const acceptedFighters = [
 ]
 
 // * Main Loop
+checkLoad();
+
 autocomplete(fighterInput, acceptedFighters);
 
 // * Functions
+function checkLoad()
+{
+    ipcRenderer.send("checkFighterLoad");
+
+    ipcRenderer.on("checkFighterLoad-reply", (event, arg) => 
+    {
+        displayData(arg);
+    });
+}
+
 function displayData(fighter)
 {
     // clean up in case previous fighter was Pokemon Trainer

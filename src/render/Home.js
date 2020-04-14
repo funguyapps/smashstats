@@ -3,9 +3,12 @@ const sqlite = require("sqlite3").verbose();
 const path = require("path");
 const moment = require("moment");
 const chart = require("chart.js");
+const { ipcRenderer } = require("electron");
 
 // global variables
 const dbPath = path.join(__dirname, "../stats.db");
+let currentMain;
+let box1Name, box2Name, box3Name;
 
 // doc references
 const box1Left = document.getElementById("box1Left");
@@ -22,6 +25,9 @@ const box3Img = document.getElementById("box3Img");
 const mainImg = document.getElementById("mainImg");
 const mainP = document.getElementById("mainP");
 
+const mainImgLink = document.getElementById("mainImgLink");
+const box1Link = document.getElementById("box1Link");
+
 const winProgressionCanvas = document.getElementById("winProgressionCanvas");
 const currentWinPct = document.getElementById("currentWinPct");
 
@@ -30,7 +36,17 @@ const filterSelect = document.getElementById("filterSelect");
 // set up event listeners
 filterSelect.onchange = () => { getTop3(filterSelect.value) };
 
+mainImgLink.onclick = () => { readyFighterLoad(currentMain); };
+box1Link.onclick = () => { readyFighterLoad(box1Name); };
+box2Link.onclick = () => { readyFighterLoad(box2Name); };
+box3Link.onclick = () => { readyFighterLoad(box3Name); };
+
 // data access functions
+function readyFighterLoad(fighter)
+{
+    ipcRenderer.send("setFighterLoad", fighter);
+}
+
 function getTop3(sortMethod)
 {
     const db = new sqlite.Database(dbPath);
@@ -45,7 +61,7 @@ function getTop3(sortMethod)
 
         // box 1
         if (rows[0].sort === 0) { return; }
-        const box1Name = rows[0].name;
+        box1Name = rows[0].name;
 
         box1Left.textContent = box1Name;
         box1Right.textContent = rows[0].sort;
@@ -54,7 +70,7 @@ function getTop3(sortMethod)
 
         // box 2
         if (rows[1].sort === 0) { return; }
-        const box2Name = rows[1].name;
+        box2Name = rows[1].name;
 
         box2Left.textContent = box2Name;
         box2Right.textContent = rows[1].sort;
@@ -63,7 +79,7 @@ function getTop3(sortMethod)
 
         // box 3
         if (rows[2].sort === 0) { return; }
-        const box3Name = rows[2].name;
+        box3Name = rows[2].name;
         
         box3Left.textContent = rows[2].name;
         box3Right.textContent = rows[2].sort;
@@ -106,6 +122,8 @@ function mainHighlight()
                 flipMain(button, main, nextMain);
             };
 
+            currentMain = main;
+
             document.getElementById("cycleButton").appendChild(button);
         }
     }
@@ -117,11 +135,13 @@ function flipMain(button, main1, main2)
     {
         button.textContent = main2;
         setMainData(main1);
+        currentMain = main1;
     }
     else
     {
         button.textContent = main1;
         setMainData(main2);
+        currentMain = main2;
     }
 }
 

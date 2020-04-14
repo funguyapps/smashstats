@@ -2,6 +2,8 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
+let fighterLoad;
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
@@ -21,10 +23,10 @@ const createWindow = () =>
 
   if (fs.existsSync(path.join(__dirname, "profile.json")))
   {
-    //mainWindow.loadFile(path.join(__dirname, 'pages/Home.html'));
+    mainWindow.loadFile(path.join(__dirname, 'pages/Home.html'));
 
-    // debug purposes only! uncomment line above for prod
-    mainWindow.loadFile(path.join(__dirname, 'pages/Fighters.html'));
+    // ! debug purposes only! uncomment line above for prod
+    //mainWindow.loadFile(path.join(__dirname, 'pages/Fighters.html'));
   }
   else
   {
@@ -64,4 +66,14 @@ ipcMain.on("createProfile", (event, args) =>
 ipcMain.on("checkProfile", (event, arg) => 
 {
 	event.reply("checkProfile-reply", fs.existsSync(path.join(__dirname, "profile.json")));
+});
+
+ipcMain.on("setFighterLoad", (event, arg) => 
+{
+  fighterLoad = arg;
+});
+
+ipcMain.on("checkFighterLoad", (event, arg) => 
+{
+  event.reply("checkFighterLoad-reply", fighterLoad);
 });
