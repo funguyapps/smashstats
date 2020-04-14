@@ -408,6 +408,12 @@ body
   font-weight: bold;
 }
 
+.move
+{
+  color: var(--red); 
+  padding-top:0;
+}
+
 .move-label
 {
   font-size: 5vh;

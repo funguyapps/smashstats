@@ -110,14 +110,20 @@ autocomplete(fighterInput, acceptedFighters);
 // * Functions
 function displayData(fighter)
 {
-    fighter = titleCase(fighter);
+    // clean up in case previous fighter was Pokemon Trainer
+    resetFont();
+
+    // titleCase breaks the string "R.O.B."
+    if (fighter !== "R.O.B.")
+        fighter = titleCase(fighter);
 
     if (acceptedFighters.includes(fighter))
     {
+        // database operations
         const db = new sqlite3.Database(path.join(__dirname, "../stats.db"));
 
+        // get the stats
         const getStats = `SELECT Weight weight, Speed speed, Archetype archetype FROM Bios WHERE Name=\"${fighter}\"`;
-
         db.all(getStats, (err, rows) => 
         {
             weight.textContent = rows[0].weight;
@@ -125,10 +131,8 @@ function displayData(fighter)
             archetype.textContent = rows[0].archetype;
         });
 
-        fighterImage.src = path.join(__dirname, `../assets/fighters_adjusted/${fighter}.png`);
-
+        // get the moves
         const getMoves = `SELECT Moves moves FROM Bios WHERE Name=\"${fighter}\"`;
-
         db.all(getMoves, (err, rows) =>
         {
             const moves = JSON.parse(rows[0].moves);
@@ -139,15 +143,36 @@ function displayData(fighter)
             neutral.textContent = moves.neutral;
         });
 
+        // get the bio blast
         const getBio = `SELECT Bio bio FROM Bios WHERE Name=\"${fighter}\"`;
-
         db.all(getBio, (err, rows) => 
         {
             bio.textContent = rows[0].bio;
         });
 
+        // finally, update the image
+        fighterImage.src = path.join(__dirname, `../assets/fighters_adjusted/${fighter}.png`);
+
         db.close();
+
+        // add a final check to change font size if fighter is Pokemon Trainer
+        if (fighter === "Pokemon Trainer")
+        {
+            const style = "font-size: 2.5vh; padding-top: 3%;"
+            up.style = style;
+            down.style = style;
+            side.style = style;
+            neutral.style = style;
+        }
     }
+}
+
+function resetFont()
+{
+    up.style = "";
+    down.style = "";
+    side.style =  "";
+    neutral.style = "";
 }
 
 function titleCase(str) 
