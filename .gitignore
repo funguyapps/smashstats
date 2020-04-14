@@ -1,6 +1,9 @@
 # Todo
 todo.txt
 
+# Python
+*.py
+
 # Logs
 logs
 *.log
