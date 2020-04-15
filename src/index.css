@@ -426,3 +426,8 @@ body
 {
   color: var(--darker);
 }
+
+.cushioned-row
+{
+  margin-top: 55px;
+}

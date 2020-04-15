@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="../../node_modules/siimple/dist/siimple.css">
     <link rel="stylesheet" href="../index.css">
     <link rel="stylesheet" href="../siimple-overwrite.css">
-    <script defer src="../render/Home.js"></script>
+    <script defer src="../render/Stats.js"></script>
     <script defer src="../components/titlebar.js"></script>
   </head>
   <body>
@@ -49,7 +49,79 @@
       </div>
     </div>
     <div id="main">
-      <h1 class="siimple-h1">Stats</h1>
+      <h1 class="siimple-h1" style="color: var(--green);">Overall Stats</h1>
+      <div class="siimple-grid" style="margin-top: 8vh;">
+        <!--The main grid has only 1 row-->
+        <div class="siimple-grid-row">
+          <!--Left Column-->
+          <div class="siimple-grid-col siimple-grid-col--4">
+            <!--grid layout within left column-->
+            <div class="siimple-grid">
+              <div class="siimple-grid-row">
+                <div class="siimple-grid-col--12">
+                  <a href="./CharacterStats.html" class="siimple-btn siimple-btn--fluid" style="background-color: var(--green); margin-left: 12px;">
+                    <h3 class="siimple-h3 button-label">Character Stats</h3>
+                  </a>
+                </div>
+              </div>
+              <div class="siimple-grid-row cushioned-row">
+                <div class="siimple-grid-col--12">
+                  <p class="data-label">Hardest Opponent</p>
+                  <div class="content-box" style="height: 6vh; text-align: center; width: 100%;">
+                    <p id="hardestOpponent" class="data" style="color: var(--green);"></p>
+                  </div>
+                </div>
+              </div>
+              <div class="siimple-grid-row cushioned-row">
+                <div class="siimple-grid-col--12">
+                  <p class="data-label">Play % Against Bots</p>
+                  <div class="content-box" style="height: 40vh; text-align: center; width: 100%;">
+                    <canvas id="playPctBots" style="width: 100%; height: 100%;"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--Right Column-->
+          <div class="siimple-grid-col siimple-grid-col--4">
+            <!--grid layout within right column-->
+            <div class="siimple-grid" style="position: relative; top: -40px;">
+              <div class="siimple-grid-row" style="margin-top: 0;">
+                <div class="siimple-grid-col--12" style="margin-top: 0;">
+                  <p class="data-label">Best Archetype</p>
+                  <div class="content-box" style="height: 6vh; text-align: center; width: 100%;">
+                    <p id="bestArchetype" class="data" style="color: var(--green);"></p>
+                  </div>
+                </div>
+              </div>
+              <div class="siimple-grid-row cushioned-row">
+                <div class="siimple-grid-col--12">
+                  <p class="data-label">Worst Archetype</p>
+                  <div class="content-box" style="height: 6vh; text-align: center; width: 100%;">
+                    <p id="worstArchetype" class="data" style="color: var(--green);"></p>
+                  </div>
+                </div>
+              </div>
+              <div class="siimple-grid-row cushioned-row">
+                <div class="siimple-grid-col--12">
+                  <p class="data-label">Play % by Fighter</p>
+                  <div class="content-box" style="height: 40vh; text-align: center; width: 100%;">
+                    <canvas id="playPctFighter" style="width: 100%; height: 100%;"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--Large Right Graph-->
+          <div class="siimple-grid-col siimple-grid-col--4" style="position: relative; top: -40px;">
+            <p class="data-label">Main vs. Next Top in Score</p>
+            <div class="content-box" style="height: 70vh;">
+              <canvas id="mainComparisonGraph" style="height: 100%; width: 100%;"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <div id="footer" class="footer-polygon" style="background-color: var(--green);"></div>
   </body>  
 </html>

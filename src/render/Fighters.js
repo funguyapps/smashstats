@@ -169,7 +169,7 @@ function displayData(fighter)
         db.close();
 
         // add a final check to change font size if fighter is Pokemon Trainer
-        if (fighter === "Pokemon Trainer")
+        if (fighter === "Pokemon Trainer" || fighter === "Bayonetta")
         {
             const style = "font-size: 2.5vh; padding-top: 3%;"
             up.style = style;
