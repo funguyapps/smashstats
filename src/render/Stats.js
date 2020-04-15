@@ -167,6 +167,19 @@ function populateStats()
 
     // finally, the HARDEST OPPONENT
 
+    const getHardest = `SELECT Opponent opponent,
+                            COUNT(Opponent) AS "times"
+                            FROM Battles
+                            WHERE Bot_Level == -1
+                            GROUP BY Opponent
+                            ORDER BY "times" DESC
+                            LIMIT 1`;
+
+    db.all(getHardest, (err, rows) => 
+    {
+        hardestOpponent.textContent = rows[0].opponent;
+    });
+
     db.close();
 }
 
