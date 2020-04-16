@@ -65,13 +65,14 @@ body
 {
   display: block;
   position: fixed;
+  left: 18vw;
   height: 32px;
-  width: calc(100% - 2px);
+  width: calc(100% - 2px - 18vw);
 }
 
 .maximized #titlebar 
 {
-  width: 100%;
+  width: calc(100% - 18vw);
   padding: 0;
 }
 
@@ -229,7 +230,7 @@ body
   height: 100%;
   width: 18vw; /*300px;*/
   margin: 0;
-  margin-top: 32px;
+  margin-top: 0;
   padding: 0;
   background-color: var(--darker);
 

@@ -117,7 +117,10 @@ function checkLoad()
 
     ipcRenderer.on("checkFighterLoad-reply", (event, arg) => 
     {
-        displayData(arg);
+        if (typeof(arg) !== typeof(undefined))
+        {
+          displayData(arg);
+        }
     });
 }
 
@@ -168,7 +171,7 @@ function displayData(fighter)
 
         db.close();
 
-        // add a final check to change font size if fighter is Pokemon Trainer
+        // add a final check to change font size if fighter is Pokemon Trainer, Bayonetta
         if (fighter === "Pokemon Trainer" || fighter === "Bayonetta")
         {
             const style = "font-size: 2.5vh; padding-top: 3%;"
