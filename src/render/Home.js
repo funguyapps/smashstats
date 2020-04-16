@@ -183,7 +183,7 @@ function winProgression()
         labels[0] = moment(rows[0].date).format("MM/DD");
         labels[labels.length - 1] = moment(rows[rows.length - 1].date).format("MM/DD");
 
-        currentWinPct.textContent = `Win % Progression (now ${(rows[rows.length - 1].winPct) * 100}%)`;
+        currentWinPct.textContent = `Win % Progression (now ${((rows[rows.length - 1].winPct) * 100).toFixed(2)}%)`;
 
         new chart(winProgressionCanvas, 
             {

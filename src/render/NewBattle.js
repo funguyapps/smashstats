@@ -320,7 +320,7 @@ function dataOperations()
 					// THEN insert all values
 					const insert = `INSERT INTO Battles VALUES (` +
 						`"${moment().format()}", ` +
-						`"${opponent}", ` +
+						`"${opponent.toLowerCase()}", ` +
 						`${userStocks.value}, ` +
 						`"${userFighter.value}", ` +
 						`${opponentStocks.value}, ` + 

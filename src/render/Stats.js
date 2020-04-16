@@ -1,5 +1,6 @@
 const sqlite = require("sqlite3");
 const path = require("path");
+const chart = require("chart.js");
 
 // * Doc References
 const mainComparisonChart = $("mainComparisonChart");
@@ -185,10 +186,245 @@ function populateStats()
 
 function populateCharts()
 {
+    const db = new sqlite.Database(dbPath);
 
+    // * Play Time vs. Bots, People
+
+    const getVersusBots = "SELECT Count(*) as times FROM Battles WHERE Bot_Level != -1;";
+    const getVersusOthers = "SELECT Count(*) as times FROM Battles WHERE Bot_Level == -1";
+
+    let data = [];
+
+    db.all(getVersusBots, (err, rows) => 
+    {
+        data.push(rows[0].times);
+
+        db.all(getVersusOthers, (err, rows) =>
+        {
+            data.push(rows[0].times);
+
+            // Play Pct vs. Bot
+            new chart(playPctBots, 
+                {
+                    type: "doughnut",
+                    data: 
+                    {
+                        labels: ["Against Bots", "All Others"],
+                        fontColor: "#1b1b1b",
+                        datasets: 
+                        [
+                            {
+                                data: data,
+                                backgroundColor: ["#14E870", "#0062ff"],
+                                borderColor: "#6d6d6d",
+                            }
+                        ],
+                    },
+                    options:
+                    {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        title:
+                        {
+                            display: false,
+                        },
+                        legend:
+                        {
+                            labels:
+                            {
+                                fontColor: "#1b1b1b",
+                            }
+                        }
+                    }
+                });
+        });
+    });
+
+    // * Play Time As Top 5 Most Frequent Fighters
+
+    const getFighterFrequency = "SELECT User_Fighter name, COUNT(User_Fighter) AS times FROM Battles GROUP BY User_Fighter ORDER BY times DESC";
+    const getAll = "SELECT Count(*) times FROM Battles";
+
+    let nextData = [];
+    let labels = [];
+
+    db.all(getAll, (err, rows) =>
+    {
+        nextData.push(rows[0].times);
+        labels.push("All Others");
+
+        db.all(getFighterFrequency, (err, rows) => 
+        {
+            for (let i = 0; i < rows.length; i++)
+            {
+                if (i == 4)
+                {
+                    break;
+                }
+
+                nextData[0] -= rows[i].times;
+                nextData.push(rows[i].times);
+                labels.push(rows[i].name);
+            }
+
+            new chart(playPctFighter, 
+                {
+                    type: "doughnut",
+                    data: 
+                    {
+                        labels: labels,
+                        fontColor: "#1b1b1b",
+                        datasets: 
+                        [
+                            {
+                                data: nextData,
+                                backgroundColor: ["#14E870", "#0062ff", "#ffe800", "#c20000", "#1b1b1b"],
+                                borderColor: "#6d6d6d",
+                            }
+                        ],
+                    },
+                    options:
+                    {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        title:
+                        {
+                            display: false,
+                        },
+                        legend:
+                        {
+                            labels:
+                            {
+                                fontColor: "#1b1b1b",
+                            }
+                        }
+                    }
+                });
+        });
+    });
+
+    // * Score of Main(s) vs. Next Top 5
+
+    getMains((mains) =>
+    {
+        let others = (mains.length == 1) ? 5 : 4;
+
+        const getBoth = `SELECT Name name, Score score FROM Fighters WHERE Name="${mains[0]}" OR Name="${mains[1]}"`;
+
+        let data = [];
+        let labels = [];
+
+        // get the scores of the mains
+        db.all(getBoth, (err, rows) =>
+        {
+            rows.map((row) =>
+            {
+                data.push(row.score);
+                labels.push(row.name);
+            });
+
+            const getRest = `SELECT Name name, Score score FROM Fighters WHERE NAME != "${mains[0]}" AND Name != "${mains[1]}" ORDER BY Score DESC`;
+
+            db.all(getRest, (err, rows) =>
+            {
+                for (let i = 0; i < others; i++)
+                {
+                    data.push(rows[i].score);
+                    labels.push(rows[i].name);
+                }
+
+                // create chart
+                new chart(mainComparisonChart, 
+                    {
+                        type: "horizontalBar",
+                        data:
+                        {
+                            labels: labels,
+                            fontColor: "#1b1b1b",
+                            datasets: 
+                            [
+                                {
+                                    data: data,
+                                    backgroundColor: labels.map((name) => 
+                                    { 
+                                        if (mains.includes(name))
+                                        {
+                                            return "#14E870";
+                                        }
+                                        else
+                                        {
+                                            return "#1b1b1b";
+                                        }
+                                    }),
+                                    borderColor: "#6d6d6d",
+                                }
+                            ],
+                        },
+                        options:
+                        {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            title:
+                            {
+                                display: false,
+                            },
+                            legend:
+                            {
+                                display: false,
+                            },
+                            scales: 
+                            {
+                                yAxes:
+                                [
+                                    {
+                                        display: true,
+                                        ticks: 
+                                        {
+                                            fontColor: "#1b1b1b",
+                                        },
+                                        gridLines:
+                                        {
+                                            display: false,
+                                        }
+                                    }
+                                ],
+                                xAxes:
+                                [
+                                    {
+                                        display: false,
+                                    }
+                                ]
+                            }
+                        }
+                    });
+            });
+        });
+    });
+
+    db.close();
 }
 
 // helper functions
+
+async function test()
+{
+    return 1;
+}
+
+function getMains(callback)
+{
+    // load the json file
+    const jsonLocation = path.join(__dirname, "../profile.json");
+
+    const request = new XMLHttpRequest();
+    request.callback = callback;
+    request.open("GET", jsonLocation);
+    request.responseType = "json";
+    request.send(); 
+
+    request.onload = () => { callback(request.response["mains"]) };
+}
+
 function max(dict)
 {
     let max;
