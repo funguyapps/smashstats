@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="../../node_modules/siimple/dist/siimple.css">
     <link rel="stylesheet" href="../index.css">
     <link rel="stylesheet" href="../siimple-overwrite.css">
-    <script defer src="../render/Home.js"></script>
+    <script defer src="../render/CharacterStats.js"></script>
     <script defer src="../components/titlebar.js"></script>
   </head>
   <body>
@@ -47,7 +47,78 @@
       </div>
     </div>
     <div id="main">
-      <h1 class="siimple-h1">Character Stats</h1>
+      <div class="siimple-grid">
+        <!--Top Content Row-->
+        <div class="siimple-grid-row">
+          <!--Search, Quick Sheet Column-->
+          <div class="siimple-grid-col siimple-grid-col--4">
+            <div class="siimple-form">
+              <div class="siimple-form-field" style="position: relative; width: 18vw;">
+                <i class="material-icons move-label" style="font-size: 3vh; color: var(--green);">search</i>
+                <input id="fighterInput" class="siimple-input" style="width: 15vw;" placeholder="Search for a fighter...">
+              </div>
+            </div>
+            <p class="data-label">Quick Sheet</p>
+            <div class="content-box" style="width: 100%; height: 25vh">
+              <div style="margin-top: 5%; position: relative; top: 7%;">
+                <p id="quickSheetBox" style="text-align: center; color: var(--darker); font-size: 3vh;"></p>
+              </div>
+            </div>
+          </div>
+          <div class="siimple-grid-col siimple-grid-col--4" style="height: 25vh;">
+            <img id="fighterImg" style="width: 100%; height: auto;">
+          </div>
+          <div class="siimple-grid-col siimple-grid-col--4">
+            <p class="data-label">Best Matchup</p>
+            <div class="content-box" style="height: 6vh; width: 100%;">
+              <p id="bestMatchup" class="data" style="color: var(--green);"></p>
+            </div>
+            <p class="data-label">Worst Matchup</p>
+            <div class="content-box" style="height: 6vh; width: 100%;">
+              <p id="worstMatchup" class="data" style="color: var(--green);"></p>
+            </div>
+            <p class="data-label" style="margin-top: 5%;">Quartile</p>
+            <div style="float: right; position: relative; top: -30px;">
+              <label style="color: var(--lighter);">in</label>
+              <select id="quartileFilterSelect" class="siimple-select">
+                <option>Score</option>
+                <option>Wins</option>
+                <option>KD</option>
+              </select>
+            </div>
+            <div class="content-box" style="height: 6vh; width: 100%;">
+              <p id="quartileLabel" class="data" style="color: var(--green);"></p>
+            </div>
+          </div>
+        </div>
+        <!--Bottom Graph Row-->
+        <div class="siimple-grid-row" style="margin-top: 30px;">
+          <div class="siimple-grid-col siimple-grid-col--6">
+            <p class="data-label" style="margin-top: 5%;">Win % Progression</p>
+            <div class="content-box" style="height: 37vh;">
+              <div style="width: 90%; height: 90%; margin-top: 0.5vh;">
+                <canvas id="winPctChart" style="height: 36vh;"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="siimple-grid-col siimple-grid-col--6">
+            <p class="data-label" style="margin-top: 5%;">Nearest Neighbors</p>
+            <div style="float: right; position: relative; top: -40px;">
+              <label style="color: var(--lighter);">in</label>
+              <select id="nearestNeighborFilterSelect" class="siimple-select">
+                <option>Score</option>
+                <option>Wins</option>
+                <option>KD</option>
+              </select>
+            </div>
+            <div class="content-box" style="width: 100%; height: 37vh;">
+              <canvas id="nearestNeighborChart" style="width: 100%; height: 100%"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    </div>
+    <div id="footer" class="footer-polygon" style="background-color: var(--green);"></div>
   </body>  
 </html>

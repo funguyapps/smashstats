@@ -153,7 +153,7 @@ function validate(sender)
   	{
 		dataOperations();
 		
-		sender.href = "./Home.html";
+		//sender.href = "./Home.html";
 	}
 
 	function checkNotEmpty()
@@ -326,7 +326,8 @@ function dataOperations()
 						`${opponentStocks.value}, ` + 
 						`${opponentLevel}, ` +
 						`${newTotalPct}, ` +
-						`${newCharPct});`;
+						`${newCharPct}, ` +
+						`"${opponentFighter.value}");`;
 
 					db.run(insert);
 				});

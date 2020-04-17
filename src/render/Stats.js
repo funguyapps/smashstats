@@ -415,12 +415,6 @@ function populateCharts()
 }
 
 // helper functions
-
-async function test()
-{
-    return 1;
-}
-
 function getMains(callback)
 {
     // load the json file
