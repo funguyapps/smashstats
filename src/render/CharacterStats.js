@@ -19,10 +19,15 @@ const nearestNeighborChart = $("nearestNeighborChart");
 const nearestNeighborFilterSelect = $("nearestNeighborFilterSelect");
 
 // * Event Listeners
-fighterInput.onchage = () => { populateData(fighterInput.value); populateCharts(fighterInput.value); }
+fighterInput.onchage = () => { populateData(fighterInput.value); populateCharts(fighterInput.value, true); }
+nearestNeighborFilterSelect.onchange = () => { populateCharts(fighterInput.value, false); }
 
 // * Variables
 const dbPath = path.join(__dirname, "../stats.db");
+
+let chartObject;
+let nearestNeighborData = [];
+let nearestNeighborLabels = [];
 
 const acceptedFighters = [
     "Banjo & Kazooie",
@@ -139,113 +144,290 @@ function populateData(fighter)
     }
 }
 
-function populateCharts(fighter)
+function populateCharts(fighter, showBoth)
 {
     if (fighter !== "R.O.B.")
         fighter = titleCase(fighter);
 
+    if (fighter === "")
+        return;
+
     const db = new sqlite.Database(dbPath);
 
-    const sql = `SELECT CharWinPct winPct, Meta date FROM Battles WHERE User_Fighter="${fighter}"`;
-
-    db.all(sql, (err, rows) => 
+    if (showBoth || typeof(showBoth) === typeof(undefined))
     {
-        if (rows.length === 0 || typeof(rows) === typeof(undefined)) { db.close(); return; }
-        let data = [];
-        let labels = [];
+        populateWinPct();
+    }
 
-        rows.map((value) => { data.push(value.winPct); });
-        rows.map((value) => { labels.push(""); });
+    populateNearestNeighbors(nearestNeighborFilterSelect.value);
 
-        if (rows.length === 1)
+    db.close();
+
+    function populateWinPct()
+    {
+        const sql = `SELECT CharWinPct winPct, Meta date FROM Battles WHERE User_Fighter="${fighter}"`;
+
+        db.all(sql, (err, rows) => 
         {
-            data.push(rows[0].winPct);
-            labels.push("");
-        }
+            if (rows.length === 0 || typeof(rows) === typeof(undefined)) { return; }
+            let data = [];
+            let labels = [];
 
-        labels[0] = moment(rows[0].date).format("MM/DD");
-        labels[labels.length - 1] = moment(rows[rows.length - 1].date).format("MM/DD");
+            rows.map((value) => { data.push(value.winPct); });
+            rows.map((value) => { labels.push(""); });
 
-        new chart(winPctChart, 
+            if (rows.length === 1)
             {
-                type: "line",
-                data: 
+                data.push(rows[0].winPct);
+                labels.push("");
+            }
+
+            labels[0] = moment(rows[0].date).format("MM/DD");
+            labels[labels.length - 1] = moment(rows[rows.length - 1].date).format("MM/DD");
+
+            new chart(winPctChart, 
                 {
-                    labels: labels,
-                    fontColor: "#1b1b1b",
-                    datasets: 
-                    [
-                        {
-                            data: data,
-                            fill: false,
-                            backgroundColor: "#14E870",
-                            borderColor: "#14E870",
-                        }
-                    ],
-                },
-                options:
-                {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    layout:
+                    type: "line",
+                    data: 
                     {
-                        padding:
-                        {
-                            top: 20,
-                            left: 10
-                        },
-                    },
-                    title:
-                    {
-                        display: false,
-                    },
-                    legend:
-                    {
-                        display: false,
-                    },
-                    elements: 
-                    { 
-                        point: 
-                        { 
-                            radius: 0 
-                        } 
-                    },
-                    scales: 
-                    {
-                        yAxes:
+                        labels: labels,
+                        fontColor: "#1b1b1b",
+                        datasets: 
                         [
                             {
-                                display: true,
-                                ticks: 
-                                {
-                                    min: 0,
-                                    max: 1,
-                                    fontColor: "#1b1b1b",
-                                },
-                                gridLines:
-                                {
-                                    display: false,
-                                }
+                                data: data,
+                                fill: false,
+                                backgroundColor: "#14E870",
+                                borderColor: "#14E870",
                             }
                         ],
-                        xAxes:
-                        [
+                    },
+                    options:
+                    {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        layout:
+                        {
+                            padding:
                             {
-                                display: true,
-                                ticks:
+                                top: 20,
+                                left: 10
+                            },
+                        },
+                        title:
+                        {
+                            display: false,
+                        },
+                        legend:
+                        {
+                            display: false,
+                        },
+                        elements: 
+                        { 
+                            point: 
+                            { 
+                                radius: 0 
+                            } 
+                        },
+                        scales: 
+                        {
+                            yAxes:
+                            [
                                 {
-                                  fontColor: "#1b1b1b",  
-                                },
-                                gridLines:
-                                {
-                                    display: false,
+                                    display: true,
+                                    ticks: 
+                                    {
+                                        min: 0,
+                                        max: 1,
+                                        fontColor: "#1b1b1b",
+                                    },
+                                    gridLines:
+                                    {
+                                        display: false,
+                                    }
                                 }
-                            }
-                        ]
+                            ],
+                            xAxes:
+                            [
+                                {
+                                    display: true,
+                                    ticks:
+                                    {
+                                    fontColor: "#1b1b1b",  
+                                    },
+                                    gridLines:
+                                    {
+                                        display: false,
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                })
+        });
+    }
+
+    function populateNearestNeighbors(sortMethod)
+    {
+        const sql = `SELECT Name as Name, ${sortMethod} as sort FROM Fighters WHERE ${sortMethod} != 0 ORDER BY ${sortMethod} DESC`;
+
+        nearestNeighborData = [];
+        nearestNeighborLabels = [];
+
+        db.all(sql, (err, rows) =>
+        {
+            if (rows.length === 0)
+            {
+                return;
+            }
+
+            let index = -1;
+            let j = 0;
+            rows.map((row) =>
+            {
+                if (row.Name === fighter)
+                {
+                    index = j;
+                }
+
+                j++;
+            });
+
+            if (index === -1) { return; }
+
+            if (rows.length < 5)
+            {
+                for (let i = 0; i < rows.length; i++)
+                {
+                    nearestNeighborData.push(rows[i].sort);
+                    nearestNeighborLabels.push(rows[i].Name);
+                }
+            }
+            else
+            {
+                // normal operation
+                if (rows[0].Name === fighter || rows[1].Name === fighter)
+                {
+                    // special case; fighter is first or second
+                    for (let i = 0; i < 5; i++)
+                    {
+                        nearestNeighborData.push(rows[i].sort);
+                        nearestNeighborLabels.push(rows[i].Name);
                     }
                 }
-            })
-    });
+                else if (rows[rows.length - 2] === fighter || rows[rows.length - 1] === fighter)
+                {
+                    // special case; fighter is 2nd-to-last OR last
+                    for (let i = 1; i < 6; i++)
+                    {
+                        nearestNeighborData.push(rows[rows.length - i].sort);
+                        nearestNeighborLabels.push(rows[rows.length - i].Name);
+                    }
+                }
+                else
+                {
+                    for (let i = index - 2; i < index + 2; i++)
+                    {
+                        nearestNeighborData.push(rows[i].sort);
+                        nearestNeighborLabels.push(rows[i].Name);
+                    }
+                }
+            }
+
+            if (typeof(chartObject) !== typeof(undefined))
+            {
+                chartObject.destroy();
+            }
+
+            chartObject = new chart(nearestNeighborChart, 
+                {
+                    type: "horizontalBar",
+                    data: 
+                    {
+                        labels: nearestNeighborLabels,
+                        fontColor: "#1b1b1b",
+                        datasets: 
+                        [
+                            {
+                                data: nearestNeighborData,
+                                fill: false,
+                                backgroundColor: nearestNeighborLabels.map((name) => 
+                                { 
+                                    if (fighter === name)
+                                    {
+                                        return "#14E870";
+                                    }
+                                    else
+                                    {
+                                        return "#1b1b1b";
+                                    }
+                                }),
+                                borderColor: "#14E870",
+                            }
+                        ],
+                    },
+                    options:
+                    {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        layout:
+                        {
+                            padding:
+                            {
+                                top: 0,
+                                left: 2,
+                                bottom: 45,
+                                right: 10
+                            },
+                        },
+                        title:
+                        {
+                            display: false,
+                        },
+                        legend:
+                        {
+                            display: false,
+                        },
+                        elements: 
+                        { 
+                            point: 
+                            { 
+                                radius: 0 
+                            } 
+                        },
+                        scales: 
+                        {
+                            yAxes:
+                            [
+                                {
+                                    display: true,
+                                    ticks: 
+                                    {
+                                        min: 0,
+                                        max: 1,
+                                        fontColor: "#1b1b1b",
+                                    },
+                                    gridLines:
+                                    {
+                                        display: false,
+                                    }
+                                }
+                            ],
+                            xAxes:
+                            [
+                                {
+                                    display: false,
+                                    ticks: 
+                                    {
+                                        min: 0,
+                                    },
+                                }
+                            ]
+                        }
+                    }
+                });
+        });
+    }
 }
 
 // helper functions

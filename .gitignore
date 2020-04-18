@@ -4,6 +4,9 @@ todo.txt
 # Python
 *.py
 
+# VsCode
+.vscode
+
 # Logs
 logs
 *.log
