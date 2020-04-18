@@ -454,6 +454,10 @@ function max(dict)
         }
     }
 
+    if (max === 0)
+    {
+        return "None";
+    }
     return maxLabel;
 }
 
@@ -475,13 +479,17 @@ function min(dict)
             minLabel = key;
         }
 
-        else if (value < min)
+        else if (value != 0 && value < min)
         {
             min = value;
             minLabel = key;
         }
     }
 
+    if (min === 0)
+    {
+        return "None";
+    }
     return minLabel;
 }
 

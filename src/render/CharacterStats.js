@@ -124,23 +124,55 @@ function populateData(fighter)
     // first, load the img
     fighterImg.src = path.join(__dirname, `../assets/fighters_adjusted/${fighter}.png`);
 
+    const db = new sqlite.Database(dbPath);
+
     // then populate quick sheet
     populateQuickSheet();
+    populateHardestOpponent();
+    populateEasiestOpponent();
+
+    db.close();
 
     function populateQuickSheet()
     {
-        const db = new sqlite.Database(dbPath);
-
         const getStats = `SELECT Score score, KD kd, Wins wins FROM Fighters WHERE Name="${fighter}"`;
 
         db.all(getStats, (err, rows) =>
         {
-            quickSheetBox.innerHTML = `<b style="color: var(--green); font-size: 6vh;">${rows[0].score}</b> score <br>` + 
+            quickSheetBox.innerHTML = `<b style="color: var(--green); font-size: 6vh;">${rows[0].score.toFixed(2)}</b> score <br>` + 
             `<b style="color: var(--green); font-size: 6vh;">${rows[0].wins}</b> wins <br>` + 
             `<b style="color: var(--green); font-size: 6vh;">${rows[0].kd}</b> kd`;
         });
+    }
 
-        db.close();
+    function populateHardestOpponent()
+    {
+        const getHardest = `SELECT Opponent_Fighter opponent, COUNT(*) as times FROM Battles WHERE User_Fighter == "${fighter}" AND User_Stocks == 0 ORDER BY COUNT(*) DESC`;
+
+        db.all(getHardest, (err, rows) =>
+        {
+            if (rows[0].times === 0)
+            {
+                worstMatchup.textContent = "None Found";
+                return;
+            }
+            worstMatchup.textContent = rows[0].opponent;
+        });
+    }
+
+    function populateEasiestOpponent()
+    {
+        const getHardest = `SELECT Opponent_Fighter opponent, COUNT(*) as times FROM Battles WHERE User_Fighter == "${fighter}" AND User_Stocks != 0 ORDER BY COUNT(*) DESC`;
+
+        db.all(getHardest, (err, rows) =>
+        {
+            if (rows[0].times === 0)
+            {
+                bestMatchup.textContent = "None Found";
+                return;
+            }
+            bestMatchup.textContent = rows[0].opponent;
+        });
     }
 }
 
