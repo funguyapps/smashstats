@@ -272,11 +272,19 @@ body
   margin-right: 12px;
   position: relative;
   text-align: center;
+  animation: slide-in 0.75s;
 }
 
 .content-box-title
 {
   font-size: 4vh;
+  animation: slide-in 1s;
+}
+
+@keyframes slide-in
+{
+  0%   {left: -50px;}
+  100% {left: 0px;}
 }
 
 .siimple-h1
@@ -400,6 +408,7 @@ body
   color: var(--lighter);
   font-size: 2vh;
   font-weight: bold;
+  animation: slide-in 1s;
 }
 
 .data
@@ -421,6 +430,7 @@ body
   color: var(--red);
   padding: 1%;
   float: left;
+  animation: slide-in 1s;
 }
 
 ::-webkit-input-placeholder 

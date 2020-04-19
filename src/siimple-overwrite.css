@@ -6,6 +6,13 @@
 .siimple-btn
 {
   border-radius: 15px;
+  animation: slide-in 1s;
+}
+
+@keyframes slide-in
+{
+  0% {left: -50px;}
+  100% {left: 0px;}
 }
 
 .siimple-select
@@ -23,6 +30,7 @@
 {
   background-color: var(--lighter);
   color: var(--darker);
+  animation: slide-in 1s;
 }
 
 .siimple-form-label
