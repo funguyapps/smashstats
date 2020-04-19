@@ -20,7 +20,9 @@ const nearestNeighborFilterSelect = $("nearestNeighborFilterSelect");
 
 // * Event Listeners
 fighterInput.onchage = () => { populateData(fighterInput.value); populateCharts(fighterInput.value, true); }
+
 nearestNeighborFilterSelect.onchange = () => { populateCharts(fighterInput.value, false); }
+quartileFilterSelect.onchange = () => { populateData(fighterInput.value); }
 
 // * Variables
 const dbPath = path.join(__dirname, "../stats.db");
@@ -118,6 +120,11 @@ autocomplete(fighterInput, acceptedFighters);
 // * Functions
 function populateData(fighter)
 {
+    if (fighter === "")
+    {
+        return;
+    }
+    
     if (fighter !== "R.O.B.")
         fighter = titleCase(fighter);
 
@@ -130,6 +137,8 @@ function populateData(fighter)
     populateQuickSheet();
     populateHardestOpponent();
     populateEasiestOpponent();
+    //populateQuartile(quartileFilterSelect.value);
+    populateQuartile("Score");
 
     db.close();
 
@@ -172,6 +181,50 @@ function populateData(fighter)
                 return;
             }
             bestMatchup.textContent = rows[0].opponent;
+        });
+    }
+
+    function populateQuartile(sortMethod)
+    {
+        const getAll = `SELECT Name Name, ${sortMethod} sort FROM Fighters WHERE ${sortMethod} != 0 ORDER BY ${sortMethod} DESC`;
+
+        db.all(getAll, (err, rows) =>
+        {
+            if (rows.length === 0) 
+            { 
+                return; 
+            }
+
+            let index = findIndex(rows, fighter);
+            if (index === -1) 
+            { 
+                quartileLabel.textContent = "None Found";
+                return; 
+            }
+
+            // calculate the quartiles
+            const q1Index = (rows.length / 4).toFixed(0);
+            const q3Index = (rows.length * (3/4)).toFixed(0);
+
+            const q1 = rows[q1Index].sort;
+            const q3 = rows[q3Index].sort;
+
+            let text;
+
+            if (rows[index].sort >= q1)
+            {
+                text = "Upper 25%";
+            }
+            else if (rows[index].sort <= q3)
+            {
+                text = "Lower 25%";
+            }
+            else
+            {
+                text = "Middle 50%";
+            }
+
+            quartileLabel.textContent = text;
         });
     }
 }
@@ -313,18 +366,7 @@ function populateCharts(fighter, showBoth)
                 return;
             }
 
-            let index = -1;
-            let j = 0;
-            rows.map((row) =>
-            {
-                if (row.Name === fighter)
-                {
-                    index = j;
-                }
-
-                j++;
-            });
-
+            let index = findIndex(rows, fighter);
             if (index === -1) { return; }
 
             if (rows.length < 5)
@@ -463,6 +505,23 @@ function populateCharts(fighter, showBoth)
 }
 
 // helper functions
+function findIndex(rows, fighter)
+{
+    let index = -1;
+    let j = 0;
+    rows.map((row) =>
+    {
+        if (row.Name === fighter)
+        {
+            index = j;
+        }
+
+        j++;
+    });
+
+    return index;    
+}
+
 function titleCase(str) 
 {
     return str.split(' ').map((val) => 
