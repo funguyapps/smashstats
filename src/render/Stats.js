@@ -178,6 +178,7 @@ function populateStats()
 
     db.all(getHardest, (err, rows) => 
     {
+        if (rows.length === 0) { hardestOpponent.textContent = "None Found"; return; }
         hardestOpponent.textContent = rows[0].opponent;
     });
 
@@ -319,7 +320,7 @@ function populateCharts()
     {
         let others = (mains.length == 1) ? 5 : 4;
 
-        const getBoth = `SELECT Name name, Score score FROM Fighters WHERE Name="${mains[0]}" OR Name="${mains[1]}"`;
+        const getBoth = `SELECT Name name, Score score FROM Fighters WHERE Score != 0 AND Name="${mains[0]}" OR Name="${mains[1]}"`;
 
         let data = [];
         let labels = [];
@@ -327,13 +328,15 @@ function populateCharts()
         // get the scores of the mains
         db.all(getBoth, (err, rows) =>
         {
+            if (err) { console.log(err); }
+            if (rows.length == 0) { return; }
             rows.map((row) =>
             {
                 data.push(row.score);
                 labels.push(row.name);
             });
 
-            const getRest = `SELECT Name name, Score score FROM Fighters WHERE NAME != "${mains[0]}" AND Name != "${mains[1]}" ORDER BY Score DESC`;
+            const getRest = `SELECT Name name, Score score FROM Fighters WHERE NAME != "${mains[0]}" AND Name != "${mains[1]}" AND Score != 0 ORDER BY Score DESC`;
 
             db.all(getRest, (err, rows) =>
             {

@@ -25,10 +25,10 @@ function createWindow()
 
     if (fs.existsSync(path.join(__dirname, "profile.json")))
     {
-        // mainWindow.loadFile(path.join(__dirname, "pages/Home.html"));
+        mainWindow.loadFile(path.join(__dirname, "pages/Home.html"));
 
         // ! Debug Only. Uncomment above line for Prod.
-        mainWindow.loadFile(path.join(__dirname, "pages/CharacterStats.html"));
+        //mainWindow.loadFile(path.join(__dirname, "pages/CharacterStats.html"));
     }
     else
     {

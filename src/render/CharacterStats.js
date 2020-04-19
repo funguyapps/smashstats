@@ -192,6 +192,7 @@ function populateData(fighter)
         {
             if (rows.length === 0) 
             { 
+                quartileLabel.textContent = "None Found";
                 return; 
             }
 
