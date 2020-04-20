@@ -7,6 +7,9 @@ todo.txt
 # VsCode
 .vscode
 
+# builds
+out
+
 # Logs
 logs
 *.log

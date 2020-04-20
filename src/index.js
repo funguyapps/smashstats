@@ -20,6 +20,8 @@ function createWindow()
             {
                 nodeIntegration: true,
             },
+            icon: path.join(__dirname, "assets/icon.png"),
+            title: "Smash Stats",
         }
     );
 
@@ -38,7 +40,7 @@ function createWindow()
     mainWindow.maximize();
 
     // ! Debub Only. Uncomment below for Prod.
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
 }
 
 app.on("ready", createWindow);
