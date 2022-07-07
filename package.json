@@ -54,7 +54,7 @@
   "dependencies": {
     "chart.js": "^2.9.3",
     "electron-squirrel-startup": "^1.0.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "siimple": "^3.3.1",
     "sqlite3": "^4.1.1"
   },
